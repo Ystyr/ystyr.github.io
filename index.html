@@ -1,6 +1,57 @@
-//Hello World
-<html> 
-	<head> 
-	<title> Hello World </title>
-	</head>
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="styles/theme888.css">
+<head>
+	<title>Ysryr</title>
+	<script src="scripts/mouseUtils.js"></script>
+	<script src="scripts/shadersSrcs.js"></script>
+	<script src="scripts/webGLRender.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		function testRender () {
+			const canvassHello = document.getElementById('hello');
+			const wglRend = new webGLRender(
+        		canvassHello, shaderSrc.commonVert, shaderSrc.testFrag, 
+				"file:///C:/Users/Ystyr/Desktop/Webdev/MyWebsite/ystyr.github.io/data/textures/sdfFont.png"
+        	);
+			wglRend.play(0);
+		}
+		function onLoad () {
+			testRender();
+		}
+	</script>
+</head>
+<body onload=onLoad() style="max-width:1300px">
+<div class="header">
+	<img src="data/images/AlienDevice.jpg" alt="Image">
+	<table style="width:75%; margin: auto;">
+		<tr>
+			<td><button><h2>About</h2></button></td>
+			<td><button><h2>My Works</h2></button></td>
+			<!--<td><h1>Hello! I'm Alamak!</h1></td>-->
+			<td><canvas id='hello'></canvas></td>
+			<td><button><h2>Projects</h2></button></td>
+			<td><button><h2>Resume</h2></button></td>
+		</tr>
+	</table>
+</div>
+<div class="about">
+	<h1>About</h1>
+	Hello! I'm versatile Software Engineer with 10+ yearss of experience (mostly gamedev). 
+	The specifics of the industry set high requirements to versatile skills, being a game developer, 
+	one can hardly work in a single area of expertice. 
+	Software Developer, Game Developer, Tools Developer, Render Engineer, Procedural Generation,
+	VFX Devloper, Problem Solver,
+	gui from scratch (why and how), google partnership, low-level implementation 
+	custom rendering, light-transport simulation, postprocesssing, particles, time,
+	leading, recruting
+</div>
+<footer class="header">
+	<p>Author: Aleksei Ystyr Andreev</p>
+	<p><a href="mailto:ravenametr@gmail.com">ravenametr@gmail.com</a></p>
+</footer>
+
+</body>
 </html>
