@@ -13,8 +13,8 @@
 		function testRender () {
 			const canvassHello = document.getElementById('hello');
 			const wglRend = new webGLRender(
-        		canvassHello, shaderSrc.commonVert, shaderSrc.testFrag, 
-				"file:///C:/Users/Ystyr/Desktop/Webdev/MyWebsite/ystyr.github.io/data/textures/sdfFont.png"
+        		canvassHello, shaderSrc.commonVert, 
+				shaderSrc.testFrag, "data/textures/sdfFont.png"
         	);
 			wglRend.play(0);
 		}
@@ -36,6 +36,7 @@
 			<td><button><h2>Resume</h2></button></td>
 		</tr>
 	</table>
+	<img src="data/textures/sdfFont.png">
 </div>
 <div class="about">
 	<h1>About</h1>
