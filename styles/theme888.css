@@ -62,14 +62,26 @@ button:active {
 	position: relative;
 	margin: auto;
 	height: 20%;
-	transform: translate(250%, -50%);
+	/*transform: translate(250%, -50%);*/	
+	mix-blend-mode: multiply;
 }
 
 .next {
 	position: relative;
 	margin: auto;
 	height: 20%;
-	transform: translate(-250%, -50%);;
+	cursor: pointer;
+	/*transform: translate(-250%, -50%);*/
+	mix-blend-mode: multiply;
+	transition: 300ms;
+}
+
+.next:hover {
+	mix-blend-mode:color-burn;
+}
+
+.next:active {
+	mix-blend-mode:color-dodge;
 }
 
 .slidepage {
