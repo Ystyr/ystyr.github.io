@@ -8,18 +8,39 @@
 	<script src="scripts/mouseUtils.js"></script>
 	<script src="scripts/shadersSrcs.js"></script>
 	<script src="scripts/webGLRender.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script>
-		function testRender () {
-			const canvassHello = document.getElementById('hello');
+		function titleRender () {
+			const canvassHello = document.getElementById('title');
 			const wglRend = new webGLRender(
         		canvassHello, shaderSrc.commonVert, 
-				shaderSrc.testFrag, "data/textures/sdfFont.png"
+				shaderSrc.testFrag, "https://ystyr.github.io/data/textures/sdfFont.png"
         	);
+			let activeCanvas;
+			canvassHello.onmouseover = () => activeCanvas = canvassHello;
+			canvassHello.onmouseout = () => activeCanvas = undefined;
+			wglRend.setMousePosGetter(() => {
+				const nFunc = (func, v) => func(v) * .4 + .4;
+				const n_sin = t => nFunc(Math.sin, t);
+				const n_cos = t => nFunc(Math.cos, t);
+				const time = wglRend.then;
+				const width = canvassHello.clientWidth;
+				const height = canvassHello.clientHeight;
+				const fakeMsePos = [n_sin(time) * width, n_cos(time) * height - height * .5];
+				const msePos = [canvMousePos[0] * .5, canvMousePos[1] * .5];
+				return activeCanvas? msePos: fakeMsePos;
+			});
 			wglRend.play(0);
 		}
+		function setActiveCanvas (ca) {
+
+		}
+		function titleCanvCallback (canv, event) {
+			updateCanvMouse(canv, event)
+		}
 		function onLoad () {
-			testRender();
+			titleRender();
+			const testSlider = document.getElementsByClassName('slidepage')[0];
+			testSlider.style.animationPlayState = 'running';
 		}
 	</script>
 </head>
@@ -31,15 +52,44 @@
 			<td><button><h2>About</h2></button></td>
 			<td><button><h2>My Works</h2></button></td>
 			<!--<td><h1>Hello! I'm Alamak!</h1></td>-->
-			<td><canvas id='hello'></canvas></td>
-			<td><button><h2>Projects</h2></button></td>
+			<td><canvas id='title' onmousemove="titleCanvCallback(this, event)"></canvas></td>
 			<td><button><h2>Resume</h2></button></td>
+			<td><button><h2>TL;DR</h2></button></td>
 		</tr>
 	</table>
-	<img src="data/textures/sdfFont.png">
+	<img src="data/images/arrowRight.jpg" style="mix-blend-mode: multiply;">
 </div>
+
 <div class="about">
-	<h1>About</h1>
+	<h1>About</h1>	
+	<div class="bar">
+		<button class="prev"><h2>Prev</h2></button>
+		<div class="slidepage">
+			<img src="https://www.w3schools.com/howto/img_woods.jpg">
+			<p>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+				Integer a metus placerat, finibus elit at, interdum ipsum. 
+				Class aptent taciti sociosqu ad litora torquent per conubia nostra, 
+				per inceptos himenaeos. Nunc viverra aliquet nibh ac finibus. 
+				Phasellus mollis massa tortor, vitae consequat turpis pellentesque a. 
+				Praesent non viverra nunc. Fusce consequat ligula at pellentesque viverra. 
+				Aliquam at massa urna. Cras vel lacus ullamcorper nunc pulvinar viverra sit amet a neque. 
+				Suspendisse sed egestas mauris. Aenean laoreet dictum augue tempor porttitor. 
+				Sed velit libero, venenatis et sagittis a, facilisis quis purus. 
+				Phasellus imperdiet aliquet ante non fringilla. 
+				Fusce pharetra nisi ut lacus placerat, sed porta nulla aliquet. 
+				Ut consectetur odio et tincidunt rhoncus. 
+				Curabitur aliquam in lacus eu lobortis. 
+				Fusce ac laoreet nisl, eu pulvinar erat.
+			</p>
+		</div>
+		<button class="next"><h2>Next</h2></button>
+		<!--
+		<img src="https://www.w3schools.com/howto/img_5terre.jpg">	
+		<img src="https://www.w3schools.com/howto/img_mountains.jpg">	
+		<img src="https://www.w3schools.com/howto/img_lights.jpg">
+		-->	
+	</div>
 	Hello! I'm versatile Software Engineer with 10+ yearss of experience (mostly gamedev). 
 	The specifics of the industry set high requirements to versatile skills, being a game developer, 
 	one can hardly work in a single area of expertice. 
@@ -51,6 +101,7 @@
 </div>
 <footer class="header">
 	<p>Author: Aleksei Ystyr Andreev</p>
+	<p>© All rights reserved</p>
 	<p><a href="mailto:ravenametr@gmail.com">ravenametr@gmail.com</a></p>
 </footer>
 

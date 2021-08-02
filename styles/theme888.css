@@ -6,6 +6,10 @@ body {
 	border: 1px solid #436b7f;
 }
 
+canvas {
+	cursor: pointer;
+}
+
 button {
 	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 	background-color: #3b5457;
@@ -15,6 +19,7 @@ button {
 	font-family: verdana;
 	cursor: pointer;
 	transition: 300ms;
+	
 }
 
 button:hover {
@@ -32,6 +37,7 @@ button:active {
 	color: #eeffff;
 }
 
+
 .header {
 	margin: auto;
 	padding: 10px;
@@ -39,6 +45,43 @@ button:active {
 	font-family: verdana;
 	font-style: bold;
 	text-align: center;
+}
+
+.bar {
+	position:relative;
+	width: 100%;
+  	height: 600px;
+	margin: auto;
+	overflow-y: hidden;
+	align-items: center;
+	/*text-align: center;*/
+	display: flex;
+}
+
+.prev {
+	position: relative;
+	margin: auto;
+	height: 20%;
+	transform: translate(250%, -50%);
+}
+
+.next {
+	position: relative;
+	margin: auto;
+	height: 20%;
+	transform: translate(-250%, -50%);;
+}
+
+.slidepage {
+	position: relative;
+	width: 60%;
+	margin: auto;
+	animation: slidein 1s ease 0s 1 forwards paused;
+}
+
+@keyframes slidein {
+	from { padding-left: 100%;}
+	to { padding-left: 0%;}
 }
 
 .about {

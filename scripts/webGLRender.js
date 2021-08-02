@@ -6,7 +6,7 @@ const buffersNames = {
         resolution: "u_resolution",
         mouse: "u_mouse",
         time: "u_time",
-        sampler: "u_Sampler",
+        sampler: "u_sampler",
         transforms: "u_transform"
     },
     varyings: {
@@ -62,19 +62,15 @@ class webGLRender
         this.count = 6;
         this.then = 0;
         this.gl = gl;
+        this.getMsePos = () => mousePos;
     }
 
+    setMousePosGetter (getter) {
+        this.getMsePos = getter;
+    }
 
     loadTexture(gl, url) 
     {
-        const level = 0;
-        const internalFormat = gl.RGBA;
-        const width = 1;
-        const height = 1;
-        const border = 0;
-        const srcFormat = gl.RGBA;
-        const srcType = gl.UNSIGNED_BYTE;
-        const pixel = new Uint8Array([255, 0, 255, 255]);
         const texture = gl.createTexture();
         const image = new Image();
        
@@ -83,27 +79,19 @@ class webGLRender
             gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, 
             gl.RGBA, gl.UNSIGNED_BYTE,new Uint8Array([0, 0, 255, 255])
             );
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 
         image.onload = function() {
             gl.bindTexture(gl.TEXTURE_2D, texture);
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-            /*
-            // WebGL1 has different requirements for power of 2 images
-            // vs non power of 2 images so check if the image is a
-            // power of 2 in both dimensions.
+
             if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
                 gl.generateMipmap(gl.TEXTURE_2D);
             } 
             else {
-                // Turn off mips and set wrapping to clamp to edge
                 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
                 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.BILINEAR);
             }
-            */
         };
         image.crossOrigin = 'anonymous';
         image.src = url;
@@ -111,17 +99,18 @@ class webGLRender
     }
 
     render (time) { 
-        //this.then = time;
         const gl = this.gl;
+        const msePos = this.getMsePos();
         gl.uniform1f(this.timeUniformLocation, time);
         gl.uniform2f(this.resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
-        gl.uniform2f(this.mouseUniformLocation, mousePos[0], mousePos[1]);
+        gl.uniform2f(this.mouseUniformLocation, msePos[0], msePos[1]);
         gl.uniform1i(this.uSamplerLocation, 0);
         gl.drawArrays(this.primitiveType, this.offset, this.count); 
     }
 
     play (time) {
         time *= 0.001;
+        this.then = time;
         this.render(time);
         this.request = requestAnimationFrame(t => this.play(t));
     }
