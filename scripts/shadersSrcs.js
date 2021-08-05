@@ -9,7 +9,7 @@ const shaderSrc = {
 		gl_Position = a_position;
 	}
 	`,
-	testFrag: 
+	titleFrag: 
 	`
 	precision mediump float;
 	uniform vec2 u_resolution;
