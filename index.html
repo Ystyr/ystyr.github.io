@@ -9,39 +9,106 @@
 	<script src="scripts/shadersSrcs.js"></script>
 	<script src="scripts/webGLRender.js"></script>
 	<script>
-		function titleRender () {
-			const canvassHello = document.getElementById('title');
-			const wglRend = new webGLRender(
-        		canvassHello, shaderSrc.commonVert, 
-				shaderSrc.testFrag, "https://ystyr.github.io/data/textures/sdfFont.png"
-        	);
-			let activeCanvas;
-			canvassHello.onmouseover = () => activeCanvas = canvassHello;
-			canvassHello.onmouseout = () => activeCanvas = undefined;
-			wglRend.setMousePosGetter(() => {
-				const nFunc = (func, v) => func(v) * .4 + .4;
-				const n_sin = t => nFunc(Math.sin, t);
-				const n_cos = t => nFunc(Math.cos, t);
-				const time = wglRend.then;
-				const width = canvassHello.clientWidth;
-				const height = canvassHello.clientHeight;
-				const fakeMsePos = [n_sin(time) * width, n_cos(time) * height - height * .5];
-				const msePos = [canvMousePos[0] * .5, canvMousePos[1] * .5];
-				return activeCanvas? msePos: fakeMsePos;
-			});
-			wglRend.play(0);
-		}
-		function setActiveCanvas (ca) {
+	function titleRender () {
+		const canvassHello = document.getElementById('title');
+		const wglRend = new webGLRender(
+			canvassHello, shaderSrc.commonVert, 
+			shaderSrc.testFrag, "https://ystyr.github.io/data/textures/sdfFont.png"
+		);
+		let activeCanvas;
+		canvassHello.onmouseover = () => activeCanvas = canvassHello;
+		canvassHello.onmouseout = () => activeCanvas = undefined;
+		wglRend.setMousePosGetter(() => {
+			const nFunc = (func, v) => func(v) * .4 + .4;
+			const n_sin = t => nFunc(Math.sin, t);
+			const n_cos = t => nFunc(Math.cos, t);
+			const time = wglRend.then;
+			const width = canvassHello.clientWidth;
+			const height = canvassHello.clientHeight;
+			const fakeMsePos = [n_sin(time) * width, n_cos(time) * height - height * .5];
+			const msePos = [canvMousePos[0] * .5, canvMousePos[1] * .5];
+			return activeCanvas? msePos: fakeMsePos;
+		});
+		wglRend.play(0);
+	}
+	function onLoad () {
+		const horizontalLayoutManager = {
+			currentPageIdx: 0,
+			init: () => {
+				const contrBtns = document.getElementsByClassName('layoutControl');
+				const pages = document.getElementsByClassName('slidepage');
+				const btnPrev = contrBtns[0];
+				const btnNext = contrBtns[1];
+				const disable = btn => {
+					btn.enabled = false;
+					btn.classList.add('disabled');
+				};
+				const enable = btn => {
+					btn.enabled = true;
+					btn.classList.remove('disabled');
+				};
+				const animatePages = (btn, idx, classInName, classOutName) => {
+					if (! btn.enabled) return false;
 
+					const currPage = pages[this.currentPageIdx];
+					const nextPage = pages[idx];
+					
+					currPage.classList.add(classOutName);
+					currPage.style.animationPlayState = 'running';
+					
+					nextPage.className = 'slidepage';
+					nextPage.classList.add(classInName);
+					nextPage.style.animationPlayState = 'running';
+					nextPage.getAnimations()[0].onfinish = e => {
+						nextPage.style.animationPlayState = 'paused';
+						nextPage.className = 'slidepage';
+					};	
+
+					return true;
+
+				} 
+				const next = () => {
+					const idx = this.currentPageIdx + 1;
+					if (animatePages(btnNext, idx, 'slideRight', 'hideRight')) {
+						if (idx == pages.length - 1) { 
+							disable(btnNext);
+						}
+						if (idx == 1) {
+							enable(btnPrev);
+						}
+					}
+					this.currentPageIdx = idx;
+				}
+				const prev = () => {
+					const idx = this.currentPageIdx - 1;
+					if (animatePages(btnPrev, idx, 'slideLeft', 'hideLeft')) {
+						if (idx == 0) { 
+							disable(btnPrev);
+						}
+						if (idx == pages.length - 2) {
+							enable(btnNext);
+						}
+					}
+					this.currentPageIdx = idx;
+				}
+				
+				this.currentPageIdx = 0;
+
+				btnPrev.onclick = prev;
+				disable(btnPrev);
+
+				btnNext.enabled = true;
+				btnNext.onclick = next; 
+			}
 		}
-		function titleCanvCallback (canv, event) {
-			updateCanvMouse(canv, event)
+		horizontalLayoutManager.init();
+		titleRender();
+		const slidepages = document.getElementsByClassName('slidepage');
+		for (let i = 0; i < slidepages.length; i++) {
+			slidepages[i].classList.add('slideRight');		
 		}
-		function onLoad () {
-			titleRender();
-			const testSlider = document.getElementsByClassName('slidepage')[0];
-			testSlider.style.animationPlayState = 'running';
-		}
+		slidepages[0].style.animationPlayState = 'running';
+	}		
 	</script>
 </head>
 <body onload=onLoad() style="max-width:1300px">
@@ -50,20 +117,19 @@
 	<table style="width:75%; margin: auto;">
 		<tr>
 			<td><button><h2>About</h2></button></td>
-			<td><button><h2>My Works</h2></button></td>
+			<td><button><h2>Works</h2></button></td>
 			<!--<td><h1>Hello! I'm Alamak!</h1></td>-->
-			<td><canvas id='title' onmousemove="titleCanvCallback(this, event)"></canvas></td>
+			<td><canvas id='title' onmousemove="updateCanvMouse(this, event)"></canvas></td>
 			<td><button><h2>Resume</h2></button></td>
 			<td><button><h2>TL;DR</h2></button></td>
 		</tr>
 	</table>
-	<img src="data/images/arrowR.png">
+	<!--<img src="data/images/arrowR.png">-->
 </div>
 
 <div class="about">
 	<h1>About</h1>	
-	<div class="bar">
-		<button class="prev"><h2>Prev</h2></button>
+	<div class="bar">	
 		<div class="slidepage">
 			<img src="https://www.w3schools.com/howto/img_woods.jpg">
 			<p>
@@ -83,12 +149,66 @@
 				Fusce ac laoreet nisl, eu pulvinar erat.
 			</p>
 		</div>
-		<img src="https://ystyr.github.io/data/images/arrowRight.jpg" class="next"></button>
-		<!--
-		<img src="https://www.w3schools.com/howto/img_5terre.jpg">	
-		<img src="https://www.w3schools.com/howto/img_mountains.jpg">	
-		<img src="https://www.w3schools.com/howto/img_lights.jpg">
-		-->	
+		<div class="slidepage">
+			<img src="https://www.w3schools.com/howto/img_5terre.jpg">
+			<p>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+				Integer a metus placerat, finibus elit at, interdum ipsum. 
+				Class aptent taciti sociosqu ad litora torquent per conubia nostra, 
+				per inceptos himenaeos. Nunc viverra aliquet nibh ac finibus. 
+				Phasellus mollis massa tortor, vitae consequat turpis pellentesque a. 
+				Praesent non viverra nunc. Fusce consequat ligula at pellentesque viverra. 
+				Aliquam at massa urna. Cras vel lacus ullamcorper nunc pulvinar viverra sit amet a neque. 
+				Suspendisse sed egestas mauris. Aenean laoreet dictum augue tempor porttitor. 
+				Sed velit libero, venenatis et sagittis a, facilisis quis purus. 
+				Phasellus imperdiet aliquet ante non fringilla. 
+				Fusce pharetra nisi ut lacus placerat, sed porta nulla aliquet. 
+				Ut consectetur odio et tincidunt rhoncus. 
+				Curabitur aliquam in lacus eu lobortis. 
+				Fusce ac laoreet nisl, eu pulvinar erat.
+			</p>
+		</div>
+		<div class="slidepage">
+			<img src="https://www.w3schools.com/howto/img_mountains.jpg">
+			<p>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+				Integer a metus placerat, finibus elit at, interdum ipsum. 
+				Class aptent taciti sociosqu ad litora torquent per conubia nostra, 
+				per inceptos himenaeos. Nunc viverra aliquet nibh ac finibus. 
+				Phasellus mollis massa tortor, vitae consequat turpis pellentesque a. 
+				Praesent non viverra nunc. Fusce consequat ligula at pellentesque viverra. 
+				Aliquam at massa urna. Cras vel lacus ullamcorper nunc pulvinar viverra sit amet a neque. 
+				Suspendisse sed egestas mauris. Aenean laoreet dictum augue tempor porttitor. 
+				Sed velit libero, venenatis et sagittis a, facilisis quis purus. 
+				Phasellus imperdiet aliquet ante non fringilla. 
+				Fusce pharetra nisi ut lacus placerat, sed porta nulla aliquet. 
+				Ut consectetur odio et tincidunt rhoncus. 
+				Curabitur aliquam in lacus eu lobortis. 
+				Fusce ac laoreet nisl, eu pulvinar erat.
+			</p>
+		</div>
+		<div class="slidepage">
+			<img src="https://www.w3schools.com/howto/img_lights.jpg">
+			<p>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+				Integer a metus placerat, finibus elit at, interdum ipsum. 
+				Class aptent taciti sociosqu ad litora torquent per conubia nostra, 
+				per inceptos himenaeos. Nunc viverra aliquet nibh ac finibus. 
+				Phasellus mollis massa tortor, vitae consequat turpis pellentesque a. 
+				Praesent non viverra nunc. Fusce consequat ligula at pellentesque viverra. 
+				Aliquam at massa urna. Cras vel lacus ullamcorper nunc pulvinar viverra sit amet a neque. 
+				Suspendisse sed egestas mauris. Aenean laoreet dictum augue tempor porttitor. 
+				Sed velit libero, venenatis et sagittis a, facilisis quis purus. 
+				Phasellus imperdiet aliquet ante non fringilla. 
+				Fusce pharetra nisi ut lacus placerat, sed porta nulla aliquet. 
+				Ut consectetur odio et tincidunt rhoncus. 
+				Curabitur aliquam in lacus eu lobortis. 
+				Fusce ac laoreet nisl, eu pulvinar erat.
+			</p>
+		</div>
+		<img src="data/images/arrowL.png" class="layoutControl"></img>
+		<h1 style="opacity: 0;">EMPTY SPACE FILLER</h1>
+		<img src="data/images/arrowR.png" class="layoutControl"></img>
 	</div>
 	Hello! I'm versatile Software Engineer with 10+ yearss of experience (mostly gamedev). 
 	The specifics of the industry set high requirements to versatile skills, being a game developer, 
