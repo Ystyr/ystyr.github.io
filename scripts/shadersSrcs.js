@@ -33,6 +33,10 @@ const shaderSrc = {
 
 	#define LETTER(x,y) font = fontUnion(font,char(uv,vec2(x,y),pos,vec2(0.3,0.3))); pos+=vec2(.16,0.);
 	
+	#define EM LETTER(1., 2.)
+	#define AP LETTER(7., 2.)
+	#define CM LETTER(12., 2.)
+
 	#define A LETTER(1.,4.)
 	#define B LETTER(2.,4.)
 	#define C LETTER(3.,4.)
@@ -84,7 +88,7 @@ const shaderSrc = {
 	#define W_ LETTER(7., 7.)
 	#define X_ LETTER(8., 7.)
 	#define Y_ LETTER(9., 7.)
-	#define Z_ LETTER(10., 7.)
+	#define Z_ LETTER(14., 7.)
 
 	#define TS LETTER(0, 0)
 	
@@ -93,15 +97,14 @@ const shaderSrc = {
 
 	void main() {
 		float t = u_time * .5;
-		vec2 texCo = vec2(u_texCoord.x, 1. - u_texCoord.y) * .55;
+		vec2 texCo = vec2(u_texCoord.x, 1. - u_texCoord.y) * .7;
 		vec2 uv = (texCo * u_resolution) / u_resolution.y;
-		vec2 m = /*vec2(abs(sin(t)), abs(cos(t)));*/ u_mouse / u_resolution.xy;
+		vec2 m = u_mouse / u_resolution.xy;
 		vec4 font = vec4(1.);
-		vec2 pos = vec2(0, 0.13);//.41);
+		vec2 pos = vec2(0, 0.2);//.41);
 
-		// ====== use macro to make it as if you were typing =====
-		A L A M A K // A L A B A L A
-		// ======
+		///!@ macro
+		H I_ CM _ I AP M_ _ Y S_ T_ Y_ R_ EM 
 		
 		vec3 bgCol = vec3(47.,61.,76.) / 255.;//vec3(.3);
 		vec3 inCol = vec3(1.2, .7 + uv.y * 1.5, 1.1) * vec3(max(font.z * 3., font.w * 3.)) + (cos(1. - font.xyz) * .5 - .5) * uv.y;

@@ -10,6 +10,16 @@ canvas {
 	cursor: pointer;
 }
 
+canvas.expand {
+	position: sticky;
+	display: block;
+	margin-left: -50%;
+	padding: auto;
+	z-index: 666;
+	width: 200%;
+	height: 200%;
+}
+
 button {
 	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 	background-color: #3b5457;
@@ -47,7 +57,7 @@ button:active {
 	text-align: center;
 }
 
-.bar {
+.horizontalLayout {
 	position:relative;
 	width: 100%;
   	height: 600px;
