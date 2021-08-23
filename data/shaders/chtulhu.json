@@ -1,0 +1,8 @@
+{
+	"mapsData": [
+		{"format": "gl.RGBA", "filter": "gl.LINEAR", "url": "https://ystyr.github.io/data/textures/rust.jpg"}
+	],
+	"body": "
+		
+	",
+}

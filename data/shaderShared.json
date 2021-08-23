@@ -1,0 +1,46 @@
+{
+    "version": "0.2.0",
+    "a_names": {
+        "vertPos": "vertPos"
+    },
+    "u_names": {
+        "resolution": "u_resolution",
+        "mouse": "u_mouse",
+        "time": "u_time",
+        "sampler": "u_sampler",
+        "transforms": "u_transform"
+    },
+    "v_names": {
+        "uv": "texCoord"
+    }, 
+    "defines": {
+        "PI": 3.1415,
+        "TWO_PI": 6.28318530718,
+        "HALF_PI": 1.5708   
+    },
+    "methods": {
+        "halfUp": [
+            "float halfUp (in float val) {\n\treturn val * .5 + .5;\n}\n",
+            "vec2 halfUp (in vec2 val) {\n\treturn val * .5 + .5;\n}\n",
+            "vec3 halfUp (in vec3 val) {\n\treturn val * .5 + .5;\n}\n"
+        ],
+        "hash21": [
+            "float hash21 (in vec2 st) {\n\tfloat offset = 43758.5453123;\n\tvec2 shift = vec2(12.9898, 78.233);\n\treturn fract(sin(dot(st.xy, shift)) * offset);\n}"
+        ],
+        "hash22": [
+            "vec2 hash22(vec2 st){\n\tst = vec2(dot(st, vec2(127.1, 311.7)), dot(st, vec2(269.5, 183.3)));\n\treturn -1. + 2. * fract(sin(st) * 43758.5453123);\n}"
+        ],
+        "noise": [
+            "float noise (float x) {\n\tfloat i = floor(x);\n\tfloat f = fract(x);\n\tfloat u = f * f * (3. - 2. * f);\n\tfloat a = hash21(vec2(i));\n\tfloat b = hash21(vec2(i + 1.));\n\treturn mix(a, b, u);\n}"
+        ],
+        "rot2d": [
+            "mat2 rotate2d(float angle) {\n\treturn mat2(cos(angle), -sin(angle), sin(angle), cos(angle));\n}\n"
+        ],
+        "noise2d": [
+            "https://ystyr.github.io/data/shaders/methods/noise2d"
+        ],
+        "perlin": [
+            "https://ystyr.github.io/data/shaders/methods/perlin"
+        ]
+    } 
+}

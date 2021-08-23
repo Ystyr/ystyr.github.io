@@ -1,0 +1,268 @@
+float nebula (in vec2 p, out vec3 kts) {
+    //p *= 5.;
+    float n = noise2d(p * 3.);
+    float c = perlin(p * .9);
+    n *= smoothstep(c, c + .4, .1);
+    kts.x = n;
+    n *= 1.- perlin((p + vec2(2)) * 10.);
+    n *= 1.- noise2d(p * 8.);
+    kts.y = n;
+    n *= sign(hash21(p) - .95);
+    kts.z = n;
+    return clamp(n / step(n, .005), 0., 1.) * .05;
+}
+
+float asteroid (in vec2 st, float seed, out float otl, out float mask) 
+{
+    vec2 pos = rotate2d(${u_names.time} * .25) * st;
+    float grad = dot(pos, pos);
+    float circ = dot(st, st);
+    float n = noise2d(pos * 8. + vec2(seed));
+    float cbg = smoothstep(circ - .1, circ + .1, .1);
+    float res = mod(cbg, .6 * (n + grad));
+    otl = mod(cbg, .64 * (n + grad));
+    mask = cbg - res;
+    otl = cbg - otl;
+    res = max(mask - otl * 2., res * otl);
+    return min(1., res * 2.5);
+}
+
+float stars (in vec2 p, out float id, float s) {
+    p *= 3.;
+    vec2 gp = 1.5 - fract(p * s) * 3.;
+    vec2 gi = floor(p * s);
+    id = noise2d(gi * 333.33) + .01;
+    gp = rotate2d(${u_names.time} * 3. * (id * 2. - .5)) * gp;
+    float df = 1. - pow(dot(gp, gp) * gp.x * gp.y * 5000. * id, 2.);
+    return min(1., df * max(0., hash21(gi) - .9) * 16.);
+}
+
+float starsBg (vec2 st, float scale, vec2 t) {
+    t += 999.;
+    st += t;
+    st *= scale;
+    st = rotate2d(t.y * .001) * st;
+    float f = perlin(st * 24.);
+    f = 1. - smoothstep(f - noise2d(st * t * -.025), f + .1, .5);
+    return f;
+}
+
+float meteorsBg (vec2 st, float scale, vec2 t) {
+    st += t;
+    st *= scale;
+    float f = perlin(st * 24.);
+    float th = noise2d(st * 350.);
+    float n = noise(f *.4);
+    float s = 1. - smoothstep(f * n + th, f * n - th, .5);
+    f = 1. - smoothstep(f - .02, f + .025, .5);
+    return s * f * s;
+}
+
+float hull (in vec2 st, float s) {  
+    st *= 2.;
+    int n = 5;
+    float a = atan(st.x,st.y)+PI * 2.;
+    float r = TWO_PI/float(n);
+    float d = cos(floor(.5 + a/r)*r-a)*length(st);
+    d = pow(d, abs(cos(a * 4.5)) * .1 + .5);
+    d *= abs(cos(a * sin(PI) * 3.5)) * 0.12 + 0.43;
+    d = 1.0 - smoothstep(.4, .41, d - s);
+    return d;
+}
+
+float cockpit (in vec2 p, out float h) {
+    vec2 a = vec2(0, 0);
+    vec2 b = vec2(0,-.21);
+    float r = .2;
+    
+    h = min(1., max(0., dot(p - a, b - a) / dot(b - a, b - a))); 
+    
+    float h1 = h * abs(sin(h * 8.));
+    float d = length(p - a - (b - a) * h1) * r;
+    float f = step(d, .015);
+    float h2 = sin(h * 1.2);
+    d = length(p - a - (b - a) * h2) * r;
+    f *= step(d, max(h1 * 1.8, h2 * .75) * .015);
+    return f;
+}
+
+float paint(in vec2 p) {
+    p *= 6.;
+    int n = 3;
+    float a = atan(p.x, p.y) + PI * 3.;
+    float r = TWO_PI / float(n);
+    float d = cos(floor(.5 + a / r) * r - a) * length(p);
+    d = pow(d, abs(cos(a * 8.)) * .12 + .5);
+    d *= abs(cos(a * sin(PI))) * 0.1 + 0.43;
+    d = smoothstep(.5, .2, d - .015);
+    return d;
+}
+
+float jet (in vec2 p, float s, float th, out float h) {
+
+    vec2 a = vec2(0, 0);
+    vec2 b = vec2(.05 * s, -.1);
+    float r = .2;
+    
+    h = min(1., max(0., dot(p - a, b - a) / dot(b - a, b - a))); 
+    h *= abs(sin(h * 2.) * .5 + .2 * abs(sin(${u_names.time} * 32.)) * .5);
+    h = mix(h, abs(sin(h * 3.)) * h * .75, th);
+
+    float d = length(p - a - (b - a) * h) * r;
+    return smoothstep(d - .001, d + .001, .007);
+}
+
+float fire (in vec2 p, in float t, out float h) 
+{
+    p = p * 24. + vec2(0., -5.2);
+    vec2 rp = rotate2d(.7854) * p;
+    vec2 a = (sin(rp * 5.) * .7 - .2) * t * .25 + 0.;
+    vec2 b = vec2(8.);
+
+    h = min(1., max(0., dot(rp - a, b - a) / dot(b - a, b - a))); 
+    h -= pow(h, (sin(h * 6.) * .5 + .5) * .3) * .21 * (t * t * 2.);
+
+    float shape = length(rp - a - (b - a) * h) * .1;
+    shape = smoothstep(shape - .005, shape +.005, .15 * pow(t,1.-t));
+    return shape;
+}
+
+float projectile (in vec2 p, in float t, out float h) 
+{
+    //p = p * vec2(1,-1);
+    vec2 a = vec2(0, 0);
+    vec2 b = vec2(0, -1);
+    float r = .2;
+
+    h = min(1., max(0., dot(p - a, b - a) / dot(b - a, b - a))); 
+    h = mix(h, h * .75, .35);
+    
+    float d = length(p - a - (b - a) * h) * r;
+    float f = smoothstep(d - .001, d + .01, .007);
+    
+    return f;
+}
+
+vec3 ship (in vec2 p, float shoot, float th) 
+{
+    float cph;
+    float pn = paint(p + vec2(0, -.05)) * 1.75;
+    float lp = length(p + vec2(0, .045));
+    float cpt = cockpit(p + vec2(0., -0.2), cph) * sin(cph * 1.57);
+    float cpt2 = cockpit(p * .9 + vec2(0., -0.189), cph) * sin(cph * 1.57);
+    float hll = hull(p * 2., 0.);
+    float hll2 = hull(p, 0.);    
+    float hll3 = 1.- max(hll * sin(cph * 1.57), 1.- hll * hll2);
+    float pt = min(0., pn / cpt * hll);
+    
+    float jh1;
+    float j1 = jet(p + vec2(-.155, .115), 1., th, jh1);
+    float jh2;
+    float j2 = jet(p + vec2(.155, .115), -1., 1.-th, jh2);
+    float js = max(j1, j2);
+    float jhs = max(jh1, jh2);
+    float fh;
+    float fr = fire(p, shoot, fh);
+    
+    cpt2 = cpt2 - cpt;
+    cpt2 *= hll3;
+    cpt *= hll;
+    cpt *= abs(sin(${u_names.time})) * .25 + .85;
+    hll *= step(cpt, .01);
+    hll = max(hll, hll * cpt2); 
+    hll3 *= abs(cos(1.-smoothstep(.1, 1., shoot))) * .5 + .5;
+    vec3 col = vec3(
+        hll3 + hll + min(hll, cpt * cpt2), 
+        cpt2 + hll * hll3 * 1.75, 
+        cpt * cpt2 - hll * hll2 * .1
+    );
+    
+    col += col * max(cpt, cpt2) + cpt * .75;
+    col += vec3(col.b * .5, col.r * .3, col.g * .15);
+    col *= vec3(1.- abs(sin(lp * 8. * (-pn) * .5) * .3 + .3));
+    
+    float thrs = abs(th * 2. - 1.) * 2.;
+    vec3 jets = vec3(js * jhs) + vec3(
+        js * sin(jhs * thrs * 2.), 
+        js * jhs * thrs, 
+        js * thrs * .7 - jhs
+    );
+    jets = jets - jets * (jhs + .01) * 1.;
+    
+    col = max(col, jets);
+    col += vec3(
+        fr * (fh + 32.), 
+        fr * (1.- fh * 4. + 2.), 
+        fr * abs(cos(fh * 6. + .5))
+    );
+    return col;
+} 
+
+vec3 shape (in vec2 st) {
+    vec2 rst = rotate2d(-${u_names.time}) * st;
+    float r = length(rst)*2.0;
+    float a = atan(rst.y,rst.x);
+    float f = smoothstep(-.5,1., cos(a*10.))*0.2+0.5;
+    float s = f * .49 + .1;
+    vec2 pos = rotate2d(${u_names.time} * .25) * st + s * .6;
+    float d = dot(pos, pos);
+    d = smoothstep(d, d -.0005, .0001);//.001);
+    f = smoothstep(f -.1, f +.05, r - sin(st.x * 3.) * .1);
+    f -= smoothstep(f, f -.2, (.9 - st.x * .8) - r);
+    return vec3(1. - (f + d), .55 - d, f * 2.);
+}
+
+void main () 
+{
+    float t = ${u_names.time};
+    vec2 m = ${u_names.mouse} / ${u_names.resolution};
+    vec2 uv = (${v_names.uv} * 1.3 * ${u_names.resolution}) / ${u_names.resolution}.y - vec2(.9,.5);
+    vec2 duv = uv + vec2(0, t * .05);
+    float df = 0.;
+    vec3 kts; float nbul = nebula(uv + vec2(0, t * .001), kts);
+    float sId; float strs = stars(uv + vec2(0, t * .065), sId, 6.);
+    float farstrs = starsBg(duv, 6., vec2(-t, t) * .01) * 2.;
+    float met1 = meteorsBg(duv, .65, vec2(-t * .5, t * 2.) * .05) *.7;
+    float met2 = meteorsBg(duv, .75, vec2(t * .1)) * noise(duv.y * 2.) * .75;
+    
+    float asMsk, asOtl;
+    float astT = ceil(t * .3) * 2.;
+    float astr = asteroid(
+        uv * 3.5 + vec2(2.4, 1.05), 
+        mod(astT, 9000.), 
+        asOtl, asMsk
+    );
+    
+    df = max(met1, met2);
+    df = max(df, farstrs - df);
+    
+    vec3 col = vec3(
+        max(nbul, abs(sin(kts.x * kts.y * 4.))), 
+        max(nbul * kts.x, nbul + kts.y), 
+        pow(max(nbul, kts.y), normUp(cos(kts.x * 8.)))) * .1;
+    col += vec3(abs(sin(farstrs * TWO_PI)) * .65, abs(sin(farstrs * PI)), min(1., farstrs * 2.));
+    col += max(vec3(0), vec3(strs * abs(sin(sId * 6.8)), strs * (sin(sId * PI)), strs * sin(sId + TWO_PI)));
+    vec3 shp = ship(
+        uv + vec2(cos(t * 2.) * .15, .25), 
+        tan(1.57 - t * 3.) * .25, 
+        sin(t * 2.) * .5 + .5
+    );
+    
+    col = max(col, vec3(df));
+    col -= vec3(dot(shp, shp) * 3.);
+    col = max(col, vec3(0));
+    col += shp;
+    
+    col = max(vec3(0.), col - vec3(min(1., (asMsk * asOtl) * 10.)));
+    col += vec3(
+        normUp(sin(astr + asMsk + asOtl * 5.)), 
+        normUp(cos(astr - asMsk * asOtl * abs(sin(t * .5) * TWO_PI))), 
+        normUp(sin((astr - asOtl * astr - asMsk) * 24.))
+    ) * sin(asMsk - asOtl) + 
+        astr * vec3(normUp(sin(astT * TWO_PI)), normUp(cos(astT)), abs(sin(astT) * .5));
+    
+    vec3 shCol = shape((uv + vec2(.7, .3)) * 1.9);
+    col = max(col, shCol);
+    
+    ${outFrag} = vec4(col, 1.);
+}
