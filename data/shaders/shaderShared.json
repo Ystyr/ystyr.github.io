@@ -12,6 +12,7 @@
     "v_names": {
         "uv": "texCoord"
     }, 
+    "outFrag": "outColor",
     "defines": {
         "T": "${u_names.time}",
         "RES": "${u_names.resolution}",
