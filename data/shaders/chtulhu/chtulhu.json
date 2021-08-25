@@ -5,5 +5,5 @@
 	"include": [
 		"halfUp", "dSqrt", "hash21", "rot2d"
 	],
-	"body": ""
+	"body": "https://ystyr.github.io/data/shaders/chtulhu/chtulhu.src"	
 }

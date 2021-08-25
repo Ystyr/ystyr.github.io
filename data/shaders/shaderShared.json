@@ -21,7 +21,9 @@
         "MSE": "${u_names.mouse}",
         "PI": 3.1415,
         "TWO_PI": 6.28318530718,
-        "HALF_PI": 1.5708
+        "HALF_PI": 1.5708,
+        "PI2U1": 0.1591,
+        "No0": 0.000001
     },
     "methods": {
         "halfUp": [
