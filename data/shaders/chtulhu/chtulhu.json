@@ -3,7 +3,7 @@
 		{"format": "RGBA", "filter": "LINEAR", "url": "https://ystyr.github.io/data/textures/rust.jpg"}
 	],
 	"include": [
-		"halfUp", "dSqrt", "rot2d"
+		"dSqrt", "hash21", "rot2d"
 	],
 	"body": "https://ystyr.github.io/data/shaders/chtulhu/chtulhuBody.src"	
 }
