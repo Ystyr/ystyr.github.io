@@ -2,7 +2,7 @@
 	"mapsData": [
 	],
 	"include": [
-		"halfUp", "hash21", "hash22", "noise", "rot2d", "noise2d", "perlin"
+		"halfUp", "dSqrt", "hash21", "hash22", "noise", "rot2d", "noise2d", "perlin"
 	],
 	"body": "https://ystyr.github.io/data/shaders/spaceShooter/spaceShooterbody.src"	
 }

@@ -33,13 +33,19 @@
             "float hash21 (in vec2 st) {\n\tfloat offset = 43758.5453123;\n\tvec2 shift = vec2(12.9898, 78.233);\n\treturn fract(sin(dot(st.xy, shift)) * offset);\n}"
         ],
         "hash22": [
-            "vec2 hash22(vec2 st){\n\tst = vec2(dot(st, vec2(127.1, 311.7)), dot(st, vec2(269.5, 183.3)));\n\treturn -1. + 2. * fract(sin(st) * 43758.5453123);\n}"
+            "vec2 hash22 (vec2 st) {\n\tst = vec2(dot(st, vec2(127.1, 311.7)), dot(st, vec2(269.5, 183.3)));\n\treturn -1. + 2. * fract(sin(st) * 43758.5453123);\n}",
+            "vec2 hash22 (vec2 p, float t) {\n\tvec3 a = fract(p.xyx * vec3(123.942, 234.341, 345.654));\n\ta += dot(a, a + vec3(34.457));\n\tp = fract(vec2(262144, 32768) * sin(dot(p, vec2(41, 289)))); \n\treturn sin(p * 6.2831853 + t) * .35 + .65;\n}"
         ],
         "noise": [
             "float noise (float x) {\n\tfloat i = floor(x);\n\tfloat f = fract(x);\n\tfloat u = f * f * (3. - 2. * f);\n\tfloat a = hash21(vec2(i));\n\tfloat b = hash21(vec2(i + 1.));\n\treturn mix(a, b, u);\n}"
         ],
+        "dSqrt": [
+            "float dSqrt (vec2 d) {\n\treturn dot(d, d);\n}",
+            "float dSqrt (vec3 d) {\n\treturn dot(d, d);\n}",
+            "float dSqrt (vec4 d) {\n\treturn dot(d, d);\n}"
+        ],
         "rot2d": [
-            "mat2 rotate2d(float angle) {\n\treturn mat2(cos(angle), -sin(angle), sin(angle), cos(angle));\n}\n"
+            "mat2 rotate2d (float angle) {\n\treturn mat2(cos(angle), -sin(angle), sin(angle), cos(angle));\n}\n"
         ],
         "noise2d": [
             "https://ystyr.github.io/data/shaders/methods/noise2d.src"

@@ -14,8 +14,8 @@ float nebula (in vec2 p, out vec3 kts) {
 float asteroid (in vec2 st, float seed, out float otl, out float mask) 
 {
     vec2 pos = rotate2d(T * .25) * st;
-    float grad = dot(pos, pos);
-    float circ = dot(st, st);
+    float grad = dSqrt(pos);
+    float circ = dSqrt(st);
     float n = noise2d(pos * 8. + vec2(seed));
     float cbg = smoothstep(circ - .1, circ + .1, .1);
     float res = mod(cbg, .6 * (n + grad));
@@ -32,7 +32,7 @@ float stars (in vec2 p, out float id, float s) {
     vec2 gi = floor(p * s);
     id = noise2d(gi * 333.33) + .01;
     gp = rotate2d(T * 3. * (id * 2. - .5)) * gp;
-    float df = 1. - pow(dot(gp, gp) * gp.x * gp.y * 5000. * id, 2.);
+    float df = 1. - pow(dSqrt(gp) * gp.x * gp.y * 5000. * id, 2.);
     return min(1., df * max(0., hash21(gi) - .9) * 16.);
 }
 
@@ -74,7 +74,7 @@ float cockpit (in vec2 p, out float h) {
     vec2 b = vec2(0,-.21);
     float r = .2;
     
-    h = min(1., max(0., dot(p - a, b - a) / dot(b - a, b - a))); 
+    h = min(1., max(0., dot(p - a, b - a) / dSqrt(b - a))); 
     
     float h1 = h * abs(sin(h * 8.));
     float d = length(p - a - (b - a) * h1) * r;
@@ -103,7 +103,7 @@ float jet (in vec2 p, float s, float th, out float h) {
     vec2 b = vec2(.05 * s, -.1);
     float r = .2;
     
-    h = min(1., max(0., dot(p - a, b - a) / dot(b - a, b - a))); 
+    h = min(1., max(0., dot(p - a, b - a) / dSqrt(b - a))); 
     h *= abs(sin(h * 2.) * .5 + .2 * abs(sin(T * 32.)) * .5);
     h = mix(h, abs(sin(h * 3.)) * h * .75, th);
 
@@ -118,7 +118,7 @@ float fire (in vec2 p, in float t, out float h)
     vec2 a = (sin(rp * 5.) * .7 - .2) * t * .25 + 0.;
     vec2 b = vec2(8.);
 
-    h = min(1., max(0., dot(rp - a, b - a) / dot(b - a, b - a))); 
+    h = min(1., max(0., dot(rp - a, b - a) / dSqrt(b - a))); 
     h -= pow(h, (sin(h * 6.) * .5 + .5) * .3) * .21 * (t * t * 2.);
 
     float shape = length(rp - a - (b - a) * h) * .1;
@@ -132,7 +132,7 @@ float projectile (in vec2 p, in float t, out float h)
     vec2 b = vec2(0, -1);
     float r = .2;
 
-    h = min(1., max(0., dot(p - a, b - a) / dot(b - a, b - a))); 
+    h = min(1., max(0., dot(p - a, b - a) / dSqrt(b - a))); 
     h = mix(h, h * .75, .35);
     
     float d = length(p - a - (b - a) * h) * r;
@@ -203,7 +203,7 @@ vec3 shape (in vec2 st) {
     float f = smoothstep(-.5,1., cos(a*10.))*0.2+0.5;
     float s = f * .49 + .1;
     vec2 pos = rotate2d(T * .25) * st + s * .6;
-    float d = dot(pos, pos);
+    float d = dSqrt(pos);
     d = smoothstep(d, d -.0005, .0001);//.001);
     f = smoothstep(f -.1, f +.05, r - sin(st.x * 3.) * .1);
     f -= smoothstep(f, f -.2, (.9 - st.x * .8) - r);
@@ -247,7 +247,7 @@ void main ()
     );
     
     col = max(col, vec3(df));
-    col -= vec3(dot(shp, shp) * 3.);
+    col -= vec3(dSqrt(shp) * 3.);
     col = max(col, vec3(0));
     col += shp;
     
