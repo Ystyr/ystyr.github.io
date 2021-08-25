@@ -168,7 +168,7 @@ vec3 ship (in vec2 p, float shoot, float th)
     cpt *= abs(sin(T)) * .25 + .85;
     hll *= step(cpt, .01);
     hll = max(hll, hll * cpt2); 
-    hll3 *= abs(cos(1.-smoothstep(.1, 1., shoot))) * .5 + .5;
+    hll3 *= halfUp(abs(cos(1.-smoothstep(.1, 1., shoot))));
     vec3 col = vec3(
         hll3 + hll + min(hll, cpt * cpt2), 
         cpt2 + hll * hll3 * 1.75, 
@@ -243,7 +243,7 @@ void main ()
     vec3 shp = ship(
         uv + vec2(cos(t * 2.) * .15, .25), 
         tan(1.57 - t * 3.) * .25, 
-        sin(t * 2.) * .5 + .5
+        halfUp(sin(t * 2.))
     );
     
     col = max(col, vec3(df));
