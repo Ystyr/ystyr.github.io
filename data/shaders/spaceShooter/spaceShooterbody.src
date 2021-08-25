@@ -237,7 +237,7 @@ void main ()
     vec3 col = vec3(
         max(nbul, abs(sin(kts.x * kts.y * 4.))), 
         max(nbul * kts.x, nbul + kts.y), 
-        pow(max(nbul, kts.y), normUp(cos(kts.x * 8.)))) * .1;
+        pow(max(nbul, kts.y), halfUp(cos(kts.x * 8.)))) * .1;
     col += vec3(abs(sin(farstrs * TWO_PI)) * .65, abs(sin(farstrs * PI)), min(1., farstrs * 2.));
     col += max(vec3(0), vec3(strs * abs(sin(sId * 6.8)), strs * (sin(sId * PI)), strs * sin(sId + TWO_PI)));
     vec3 shp = ship(
@@ -253,11 +253,11 @@ void main ()
     
     col = max(vec3(0.), col - vec3(min(1., (asMsk * asOtl) * 10.)));
     col += vec3(
-        normUp(sin(astr + asMsk + asOtl * 5.)), 
-        normUp(cos(astr - asMsk * asOtl * abs(sin(t * .5) * TWO_PI))), 
-        normUp(sin((astr - asOtl * astr - asMsk) * 24.))
+        halfUp(sin(astr + asMsk + asOtl * 5.)), 
+        halfUp(cos(astr - asMsk * asOtl * abs(sin(t * .5) * TWO_PI))), 
+        halfUp(sin((astr - asOtl * astr - asMsk) * 24.))
     ) * sin(asMsk - asOtl) + 
-        astr * vec3(normUp(sin(astT * TWO_PI)), normUp(cos(astT)), abs(sin(astT) * .5));
+        astr * vec3(halfUp(sin(astT * TWO_PI)), halfUp(cos(astT)), abs(sin(astT) * .5));
     
     vec3 shCol = shape((uv + vec2(.7, .3)) * 1.9);
     col = max(col, shCol);
