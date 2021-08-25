@@ -119,7 +119,7 @@ float fire (in vec2 p, in float t, out float h)
     vec2 b = vec2(8.);
 
     h = min(1., max(0., dot(rp - a, b - a) / dSqrt(b - a))); 
-    h -= pow(h, (sin(h * 6.) * .5 + .5) * .3) * .21 * (t * t * 2.);
+    h -= pow(h, halfUp(sin(h * 6.)) * .3) * .21 * (t * t * 2.);
 
     float shape = length(rp - a - (b - a) * h) * .1;
     shape = smoothstep(shape - .005, shape +.005, .15 * pow(t,1.-t));
