@@ -46,6 +46,9 @@
             "float dSqrt (vec3 d) {\n\treturn dot(d, d);\n}",
             "float dSqrt (vec4 d) {\n\treturn dot(d, d);\n}"
         ],
+        "smin2d": [
+            "float smin( float a, float b, float k ) {\n\tfloat h = clamp(.5 + .5 * (b - a)/ k, 0., 1.);\n\treturn mix(b, a, h) - k * h * (1. - h);\n}"
+        ],
         "rot2d": [
             "mat2 rotate2d (float angle) {\n\treturn mat2(cos(angle), -sin(angle), sin(angle), cos(angle));\n}\n"
         ],

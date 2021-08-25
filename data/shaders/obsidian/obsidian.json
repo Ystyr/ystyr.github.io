@@ -1,0 +1,8 @@
+{
+    "mapsInfo": [
+	],
+	"include": [
+		"halfUp", "dSqrt", "hash21", "hash22", "noise", "rot2d", "smin2d"
+	],
+	"body": "https://ystyr.github.io/data/shaders/obsidian/obsidianBody.src"	
+}
