@@ -1,5 +1,5 @@
 {
-	"mapsData": [
+	"mapsInfo": [
 	],
 	"include": [
 		"halfUp", "dSqrt", "hash21", "hash22", "noise", "rot2d", "noise2d", "perlin"
