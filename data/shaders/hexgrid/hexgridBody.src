@@ -1,0 +1,48 @@
+vec2 iAbs (inout vec2 v) {
+	v = abs(v);
+    return v;
+}
+
+float sdHex (in vec2 p) {
+    vec2 r = normalize(vec2(1., 1.73));
+    float c = dot(iAbs(p), r);
+    return max(c, p.x); 
+}
+
+vec4 hexGrid (in vec2 uv) {
+	vec2 r = vec2(1., 1.73);
+    vec2 rh = r * .5;
+    vec2 gva = mod(uv, r) - rh;  
+    vec2 gvb = mod(uv - rh, r) - rh;
+    vec2 gv;
+    if (dSqrt(gva) < dSqrt(gvb)) 
+        gv = gva;
+    else
+        gv = gvb;
+
+    vec2 id = uv - gv;
+    return vec4(atan(gv.x, gv.y), .5 - sdHex(gv), id);
+}
+
+float dPCircle(in vec2 st, in vec2 center, in float radius){
+    vec2 dist = st - center;
+	return 1. - smoothstep(
+        radius - (radius * 0.01),
+        radius + (radius * 0.01),
+        dSqrt(dist) * 4.0
+    );
+}
+
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
+{
+    vec2 uv = (FRAG_XY * 2. - 1.) / RES.y * RES.xy;
+    vec2 uvs = uv * 14.;
+    vec3 col = vec3(0);
+	
+    vec4 hg = hexGrid(uvs);
+    float c = smoothstep(.01, .1, hg.y * sin(hg.z * hg.w + iTime));
+    
+    col += c; 
+
+    FRAG_OUT = vec4(col,1.0);
+}
