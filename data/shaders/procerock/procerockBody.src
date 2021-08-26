@@ -10,6 +10,10 @@
 #define BLU vec3(0, 0, 1)
 #define VLT vec3(.5, 0, 1)
 
+const vec3[] rainbow = vec3[6] (
+    RED, ORN, YEL, GRN, BLU, VLT
+);
+
 vec3 background (vec3 d) {
     float t = u_time;
     vec3 dirM = vec3(d.x * cos01(d.z * 16. + d.y), d.y, d.z * sin01(d.x * 16. + d.y));
@@ -26,7 +30,7 @@ vec3 background (vec3 d) {
 vec4 getCatz (vec2 uv, float fr) 
 { 
     float t = u_time;
-    float fx = 0.15667;//(1. - .06) / 6.;
+    float fx = 0.15667; ///!@ <- (1. - .06) / 6.;
     float fn = mod(floor(t * fr), 6.);
     vec2 st = vec2(.04 + fract(uv.x * 2.) * .5, uv.y);
     vec2 sto = st * vec2(1., 32.);
@@ -38,20 +42,12 @@ vec4 getCatz (vec2 uv, float fr)
     auv.x *= step(fract(auv.x), fx);
     auv.x += fx * fn;
     
-    ///!@ rainbow
-    vec3 colors[6]; 
-    colors[0] = RED;
-    colors[1] = ORN;
-    colors[2] = YEL;
-    colors[3] = GRN;
-    colors[4] = BLU;
-    colors[5] = VLT;
     float sfm = sin(st.x * 120. + t * fr);
     float a = step(7. + sfm, gid.y);
     vec3 rnbow = RED;
     for(int i = 1; i < 6; i++) {
         float w = step(7. + float(i) * 3. + sfm, gid.y);
-        rnbow = mix(rnbow, colors[i], w);
+        rnbow = mix(rnbow, rainbow[i], w);
     }
     float e = step(gid.y, 25. + sfm);
     vec4 col = vec4(rnbow, min(a, e) * pow(st.x * 2., 4.));
@@ -102,8 +98,8 @@ void main ()
     vec3 col = vec3(0);
     
     vec3 ro = vec3(0, 3, -3);
-    ro.yz *= rotate2d(-m.y*3.14+1.);
-    ro.xz *= rotate2d(-m.x*6.2831);
+    ro.yz *= rotate2d(-m.y * PI + 1.);
+    ro.xz *= rotate2d(-m.x * TWO_PI);
     
     vec4 catz = vec4(0.);
     vec3 rd = getRayDir(uv, ro, vec3(0), 1.);
@@ -117,9 +113,9 @@ void main ()
         
         vec3 bgRefl = background(reflect(rd, normalize(n)));
 
-        vec3 col_xy = texture(u_sampler0, p.xy * .5 - .5).rgb;
-        vec3 col_xz = texture(u_sampler0, p.xz * .5 - .5).rgb;
-        vec3 col_yz = texture(u_sampler0, p.yz * .5 - .5).rgb;
+        vec3 col_xy = texture(u_sampler0, halfDown(p.xy)).rgb;
+        vec3 col_xz = texture(u_sampler0, halfDown(p.xz)).rgb;
+        vec3 col_yz = texture(u_sampler0, halfDown(p.yz)).rgb;
         
         vec3 nm_xy = normalize(dot(col_xy, col_xy) * LIGHT_DIR * n);
         vec3 nm_xz = normalize(dot(col_xz, col_xz) * LIGHT_DIR * n);
