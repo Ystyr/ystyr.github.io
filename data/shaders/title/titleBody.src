@@ -1,10 +1,10 @@
 vec4 char(vec2 pos, vec2 letterPos, vec2 origin, vec2 size) {
-    pos = (pos-origin)/size + letterPos;
-    pos = clamp(pos,letterPos,(letterPos+1.));
-    return texture(u_sampler, (pos / 16.));
+    pos = (pos - origin) / size + letterPos;
+    pos = clamp(pos, letterPos, (letterPos+1.));
+    return texture(u_sampler0, (pos / 16.));
 }
 
-vec4 fontUnion(vec4 f1, vec4 f2){
+vec4 fontUnion(vec4 f1, vec4 f2) {
     if(f1.w<f2.w)
         return f1;
     else
