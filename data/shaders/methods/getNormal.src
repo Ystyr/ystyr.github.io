@@ -1,0 +1,9 @@
+vec3 getNormal(vec3 p) {
+    float d = getDist(p);
+    vec2 e = vec2(.001, 0); 
+    vec3 n = d - vec3(
+        getDist(p-e.xyy),
+        getDist(p-e.yxy),
+        getDist(p-e.yyx));   
+    return normalize(n);
+}
