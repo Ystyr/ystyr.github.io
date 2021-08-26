@@ -33,7 +33,7 @@ float dPCircle(in vec2 st, in vec2 center, in float radius){
     );
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
+void main()
 {
     vec2 uv = (FRAG_XY * 2. - 1.) / RES.y * RES.xy;
     vec2 uvs = uv * 14.;
