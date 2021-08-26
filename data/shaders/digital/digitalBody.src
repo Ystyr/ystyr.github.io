@@ -1,0 +1,31 @@
+float to01(float value, float bias) {
+	return max(0., sign(value - bias));
+}
+
+float flow (in vec2 st, vec2 scale) {
+	return T * hash21(st * scale.x) * scale.y; 
+}
+
+void main ()
+{
+    float scale = 80.;
+    vec2 uv = FRAG_XY / RES.xy;
+    vec4 m = = MSE / RES.xy;;
+    vec2 st = uv * vec2(2, 1) * scale;
+    vec2 gv = fract(st);
+    float row = floor(uv.y * scale);
+    float hash = hash21(vec2(row));
+    float dir = sign(hash - .5);
+    float speed = 40.;
+    float fl = T * hash * dir * speed; 
+    float bias = max(m.x + .01, .45);
+    vec2 id = vec2(floor(st.x + fl), row);
+    float n = to01(
+        hash21(vec2(floor(id.x * .025), id.y)), bias
+    );
+    n *= to01(hash21(id), bias);
+    n = max(n, floor(gv.y * 1.3));
+    vec3 col = vec3(n);
+
+    FRAG_OUT = vec4(col, 1.);
+}

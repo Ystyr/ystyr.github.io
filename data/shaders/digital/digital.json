@@ -1,0 +1,8 @@
+{
+    "mapsInfo": [
+	],
+	"include": [
+        "hash21"
+	],
+	"body": "https://ystyr.github.io/data/shaders/digital/digitalBody.src"	
+}

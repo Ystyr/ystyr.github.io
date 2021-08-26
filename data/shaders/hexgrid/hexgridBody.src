@@ -36,7 +36,7 @@ float dPCircle(in vec2 st, in vec2 center, in float radius){
 void main()
 {
     vec2 uv = (FRAG_XY * 2. - 1.) / RES.y * RES.xy;
-    vec2 uvs = uv * 14.;
+    vec2 uvs = uv * 9.;
     vec3 col = vec3(0);
 	
     vec4 hg = hexGrid(uvs);
@@ -44,5 +44,5 @@ void main()
     
     col += c; 
 
-    FRAG_OUT = vec4(col,1.0);
+    FRAG_OUT = vec4(col, 1.);
 }
