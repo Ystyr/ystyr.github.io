@@ -130,7 +130,7 @@ void main ()
 
         float dif = dot(normMap - n * .45, normalize(LIGHT_DIR)) * .5 + .5;
         
-        vec2 st = vec2(atan(p.x, p.z) / 6.2832, p.y / 3. * 2.) + .5;
+        vec2 st = vec2(atan(p.x, p.z) / TWO_PI, p.y / 3. * 2.) + .5;
         st.y = 1. - st.y;
         st.x = 1. - st.x;
         st.x -= u_time * .1;
@@ -150,7 +150,6 @@ void main ()
     col -= smoothstep(.0, 1., dtuv * .3);
     col = mix(col, gray, dtuv * .75);
 
-    ///!@ tweaks
     float h = dh.y * (.00025 + 0.0002 * sin(t * .5)); 
     float w = (col.r + col.g + col.b);
     col -= sin(w * 10.) * gray * .5;
