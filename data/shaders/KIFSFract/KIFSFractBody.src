@@ -11,7 +11,7 @@ void main () {
     vec2 m = MSE / RES.xy;
     vec3 col = vec3(0);
     float sin_osT = sinOS(T, .25);
-    float scale = 1.;
+    float scale = 3.;
 
     uv.x = abs(uv.x);
     uv.y += tan(theta) * .65;
