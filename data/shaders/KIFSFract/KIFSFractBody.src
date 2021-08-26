@@ -15,11 +15,11 @@ void main () {
 
     uv.x = abs(uv.x);
     uv.y += tan(theta) * .65;
-    vec2 n = rotate2d(theta);
+    vec2 n = rot(theta);
     float uvn = dot(uv - vec2(.5, 0.), n);
     
     uv -= max(0., uvn) * n * 2.;  
-    n = rotate2d(mix(0.25, phi, sinOS(T * .1, .5)));
+    n = rot(mix(0.25, phi, sinOS(T * .1, .5)));
     uv.x += .5;
     
     for (int i = 0; i < 3; i++) {
