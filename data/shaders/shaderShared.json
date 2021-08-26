@@ -37,14 +37,14 @@
             "vec3 halfDown (in vec3 val) {\n\treturn val * .5 - vec3(.5);\n}"
         ],
         "sin01": [
-            "float sin01 (float value) {\n\treturn sin(value) * .5 + .5;\n}",
-            "float sin01 (vec2 value) {\n\treturn sin(vec2 value) * .5 + .5;\n}",
-            "float sin01 (vec3 value) {\n\treturn sin(vec3 value) * .5 + .5;\n}"
+            "float sin01 (float val) {\n\treturn sin(float val) * .5 + .5;\n}",
+            "float sin01 (vec2 val) {\n\treturn sin(vec2 val) * .5 + .5;\n}",
+            "float sin01 (vec3 val) {\n\treturn sin(vec3 val) * .5 + .5;\n}"
         ],
         "cos01": [
-            "float cos01 (float value) {\n\treturn cos(value) * .5 + .5;\n}",
-            "float cos01 (vec2 value) {\n\treturn cos(vec2 value) * .5 + .5;\n}",
-            "float cos01 (vec3 value) {\n\treturn cos(vec3 value) * .5 + .5;\n}"
+            "float cos01 (float val) {\n\treturn cos(float val) * .5 + .5;\n}",
+            "float cos01 (vec2 val) {\n\treturn cos(vec2 val) * .5 + .5;\n}",
+            "float cos01 (vec3 val) {\n\treturn cos(vec3 val) * .5 + .5;\n}"
         ],
         "hash21": [
             "float hash21 (in vec2 st) {\n\tfloat offset = 43758.5453123;\n\tvec2 shift = vec2(12.9898, 78.233);\n\treturn fract(sin(dot(st.xy, shift)) * offset);\n}"
@@ -65,7 +65,7 @@
             "mat2 rotate2d (float angle) {\n\treturn mat2(cos(angle), -sin(angle), sin(angle), cos(angle));\n}\n"
         ],
         "smin2d": [
-            "float smin( float a, float b, float k ) {\n\tfloat h = clamp(.5 + .5 * (b - a)/ k, 0., 1.);\n\treturn mix(b, a, h) - k * h * (1. - h);\n}"
+            "float smin(float a, float b, float k) {\n\tfloat h = clamp(.5 + .5 * (b - a)/ k, 0., 1.);\n\treturn mix(b, a, h) - k * h * (1. - h);\n}"
         ],
         "sdBox": [
             "float sdBox(vec3 p, vec3 s) {\n\tp = abs(p) - s;\n\treturn length(max(p, 0.)) + min(max(p.x, max(p.y, p.z)), 0.);\n}"
