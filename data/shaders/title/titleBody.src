@@ -1,7 +1,7 @@
 vec4 char(vec2 pos, vec2 letterPos, vec2 origin, vec2 size) {
     pos = (pos-origin)/size + letterPos;
     pos = clamp(pos,letterPos,(letterPos+1.));
-    return texture2D(u_sampler, (pos/16.));
+    return texture(u_sampler, (pos / 16.));
 }
 
 vec4 fontUnion(vec4 f1, vec4 f2){
@@ -72,7 +72,7 @@ vec4 fontUnion(vec4 f1, vec4 f2){
 
 #define TS LETTER(0, 0)
 
-#define n0 pos = vec2(.01*sin(pos.y*u_time)-1.,pos.y-0.3);
+#define n0 pos = vec2(.01 * sin(pos.y * T) - 1., pos.y - 0.3);
 #define _ pos += vec2(.1,0.);
 
 void main() {
@@ -81,38 +81,38 @@ void main() {
     vec2 uv = (texCo * RES) / RES.y;
     vec2 m = MSE / RES.xy;
     vec4 font = vec4(1.);
-    vec2 pos = vec2(0, 0.2);//.41);
+    vec2 pos = vec2(0, 0.2);
 
     ///!@ macro
     H I_ CM _ I AP M_ _ Y S_ T_ Y_ R_ EM 
     
-    vec3 bgCol = vec3(47.,61.,76.) / 255.;//vec3(.3);
+    vec3 bgCol = vec3(47.,61.,76.) / 255.;
     vec3 inCol = vec3(1.2, .7 + uv.y * 1.5, 1.1) * vec3(max(font.z * 3., font.w * 3.)) + (cos(1. - font.xyz) * .5 - .5) * uv.y;
     vec3 outCol = max(vec3(.88,.75, 1.2), max(font.wzw, font.zwz));
     
     float outWidth = 0.05;
     float deepness = 0.3;
     
-    font.yzw = 1. -2. * font.yzw; // center everything on 0, above 0 = in the font
+    font.yzw = 1. -2. * font.yzw; 
     float inner = smoothstep(-.1, .007, font.w);
 
-    font = (1.2-inner) * font; // everything in the font gets leveled to 0 (font.w <= 0)
-    font.w += outWidth; // now everithing above 0 is in the outline
-    float outer = smoothstep(-.01, inner * .2, font.w); // this is the inner + the outline
-    font *= outer * deepness/outWidth;  // crop everything outside the outline, and map to height
+    font = (1.2 - inner) * font; 
+    font.w += outWidth; 
+    float outer = smoothstep(-.01, inner * .2, font.w); 
+    font *= outer * deepness / outWidth;
 
-    vec3 viewPos = vec3(font.wzx);//vec3(uv,font.w);
-    vec3 lightPos = vec3(m.x, m.y, .4);//vec3(3.,2.,.4);
-    vec3 lightDir = normalize(lightPos-viewPos);
+    vec3 viewPos = vec3(font.wzx);
+    vec3 lightPos = vec3(m.x, m.y, .4);
+    vec3 lightDir = normalize(lightPos - viewPos);
     vec3 normal = normalize(vec3(-font.g, font.b, 1.));
     vec3 reflectDir = reflect(-lightDir, normal);
     
-    vec3 viewDir = normalize(vec3(0.,0.,1.) - viewPos);
-    float spec = pow(max(dot(viewDir, reflectDir),0.), 5.);
+    vec3 viewDir = normalize(vec3(0., 0. ,1.) - viewPos);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.), 5.);
     
-    float light = .5 + .8*max(dot(normal, lightDir), 0.) + 2.2 * spec;
+    float light = .5 + .8 * max(dot(normal, lightDir), 0.) + 2.2 * spec;
     vec3 col = light * (inner * inCol + (outer - inner) * outCol + (1. - outer));
-    col *= outer * deepness/outWidth * bgCol;
+    col *= outer * deepness / outWidth * bgCol;
     col = max(col, bgCol);
 
     FRAG_OUT = vec4(col, 1);
