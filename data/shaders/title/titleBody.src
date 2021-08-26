@@ -36,7 +36,7 @@ vec4 fontUnion(vec4 f1, vec4 f2) {
 #define Q LETTER(1.,5.)
 #define R LETTER(2.,5.)
 #define S LETTER(3.,5.)
-#define T LETTER(4.,5.)
+//#define T LETTER(4.,5.)
 #define U LETTER(5.,5.)
 #define V LETTER(6.,5.)
 #define W LETTER(7.,5.)
