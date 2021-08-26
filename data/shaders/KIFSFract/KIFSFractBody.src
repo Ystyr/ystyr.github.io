@@ -1,0 +1,55 @@
+#define pix1 1./ RES.y
+#define phi 2.094331239 
+#define theta 2.617916
+
+float sinOS(float value, float offset) {
+    return(offset - sin(value) * offset);
+}
+
+///!@ folding space is the thing
+void main () {
+    vec2 uv = (FRAG_XY * 2. - 1.) / RES.y * RES.xy;
+    vec2 m = MSE / RES.xy;
+    vec3 col = vec3(0);
+    float sin_osT = sinOS(T, .25);
+    float scale = 1.;
+
+    uv.x = abs(uv.x);
+    uv.y += tan(theta) * .65;
+    vec2 n = rotate2d(theta);
+    float uvn = dot(uv - vec2(.5, 0.), n);
+    
+    uv -= max(0., uvn) * n * 2.;  
+    n = rotate2d(mix(0.25, phi, sinOS(T * .1, .5)));
+    uv.x += .5;
+    
+    for (int i = 0; i < 3; i++) {
+        uv *= 3.;
+        scale *= 3.;
+        uv.x -= 1.5;
+        uv.x = abs(uv.x);
+        uv.x -= .5;
+        uv -= min(0., dot(uv, n)) * n * 2.;     
+    }
+    
+    float d = length(uv - vec2(min(1., uv.x), 0.));
+    float l = smoothstep(pix1 * 3., 0., d/scale);
+    col = vec3(l);
+
+    vec2 gv = fract(uv * 4.) - .5;
+    uv /= scale;
+    col.r = l * sin_osT;
+    col.g = l * sinOS(T * 2., .25);
+    col.b = l * sinOS(T * 3., .25);
+    col -= gv.x * gv.y * sin_osT;
+    col -= texture(u_sampler0, uv * 2. - T * .025).xyz;
+    col.rg += uv / scale;
+
+    col.b += d + l;
+    col += .85 - d *.25;
+    col.rg -= uv * d;
+
+    col.b *= (col.r + col.g) * sin_osT * 1.5;
+    
+    gl_FragColor = vec4(col,1.0);
+}

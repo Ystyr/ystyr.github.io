@@ -1,0 +1,9 @@
+{
+    "mapsInfo": [
+        {"format": "RGBA", "filter": "NEAREST", "url": "https://ystyr.github.io/data/textures/stars.jpg"}
+	],
+	"include": [
+		"halfUp", "halfDown", "sin01", "cos01", "dSqrt", "rot2d", "sdBox", "getRayDir"
+	],
+	"body": "https://ystyr.github.io/data/shaders/KIFSFract/KIFSFractBody.src"	
+}

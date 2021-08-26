@@ -55,7 +55,7 @@ vec4 getCatz (vec2 uv, float fr)
     }
     float e = step(gid.y, 25. + sfm);
     vec4 col = vec4(rnbow, min(a, e) * pow(st.x * 2., 4.));
-    vec4 sp = texture2D(u_sampler1, auv);
+    vec4 sp = texture(u_sampler1, auv);
     col = mix(col, sp, sp.a);
     return col;
 }
@@ -64,7 +64,7 @@ float getDist(vec3 p) {
     float t = T;  
     float d = mix(sdBox(p, vec3(1)), length(p)-1.5, sin(t) * .4 + .6);  
     vec2 uv = vec2(atan(p.x, p.z) / 6.2832, p.y / 3.) + .5;
-    vec4 displMap = texture2D(u_sampler2, vec2(uv.x * 2. + t * .025, uv.y));
+    vec4 displMap = texture(u_sampler2, vec2(uv.x * 2. + t * .025, uv.y));
     float disp = mix(cos(p.y * 2. + t), dot(displMap, displMap) * .65, .5); 
     disp *= smoothstep(1., 0.8, abs(p.y)); 
     d -= disp * .3;  
@@ -117,9 +117,9 @@ void main ()
         
         vec3 bgRefl = background(reflect(rd, normalize(n)));
 
-        vec3 col_xy = texture2D(u_sampler0, p.xy * .5 - .5).rgb;
-        vec3 col_xz = texture2D(u_sampler0, p.xz * .5 - .5).rgb;
-        vec3 col_yz = texture2D(u_sampler0, p.yz * .5 - .5).rgb;
+        vec3 col_xy = texture(u_sampler0, p.xy * .5 - .5).rgb;
+        vec3 col_xz = texture(u_sampler0, p.xz * .5 - .5).rgb;
+        vec3 col_yz = texture(u_sampler0, p.yz * .5 - .5).rgb;
         
         vec3 nm_xy = normalize(dot(col_xy, col_xy) * LIGHT_DIR * n);
         vec3 nm_xz = normalize(dot(col_xz, col_xz) * LIGHT_DIR * n);
