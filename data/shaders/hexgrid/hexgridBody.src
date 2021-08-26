@@ -40,7 +40,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec3 col = vec3(0);
 	
     vec4 hg = hexGrid(uvs);
-    float c = smoothstep(.01, .1, hg.y * sin(hg.z * hg.w + iTime));
+    float c = smoothstep(.01, .1, hg.y * sin(hg.z * hg.w + T));
     
     col += c; 
 
