@@ -6,7 +6,6 @@ float sinOS(float value, float offset) {
     return(offset - sin(value) * offset);
 }
 
-///!@ folding space is the thing
 void main () {
     vec2 uv = (FRAG_XY * 2. - 1.) / RES.y * RES.xy;
     vec2 m = MSE / RES.xy;
@@ -33,7 +32,7 @@ void main () {
     }
     
     float d = length(uv - vec2(min(1., uv.x), 0.));
-    float l = smoothstep(pix1 * 3., 0., d/scale);
+    float l = smoothstep(pix1 * 3., 0., d / scale);
     col = vec3(l);
 
     vec2 gv = fract(uv * 4.) - .5;
@@ -51,5 +50,5 @@ void main () {
 
     col.b *= (col.r + col.g) * sin_osT * 1.5;
     
-    gl_FragColor = vec4(col,1.0);
+    FRAG_OUT = vec4(col,1.0);
 }
