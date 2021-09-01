@@ -5,5 +5,6 @@
 	"include": [
 		"halfUp", "halfDown", "sin01", "cos01", "dSqrt", "rot2d", "sdBox", "getRayDir"
 	],
-	"body": "https://ystyr.github.io/data/shaders/KIFSFract/KIFSFractBody.src"	
+	"body": "https://ystyr.github.io/data/shaders/KIFSFract/KIFSFractBody.src",
+	"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nInteger a metus placerat, finibus elit at, interdum ipsum. \nClass aptent taciti sociosqu ad litora torquent per conubia nostra, \nper inceptos himenaeos. Nunc viverra aliquet nibh ac finibus. \nPhasellus mollis massa tortor, vitae consequat turpis pellentesque a.\nPraesent non viverra nunc. Fusce consequat ligula at pellentesque viverra. "
 }
