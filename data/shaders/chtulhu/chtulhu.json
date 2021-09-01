@@ -1,10 +1,11 @@
 {
+	"title": "Chtulhu World",
+	"description": "Sed velit libero, venenatis et sagittis a, facilisis quis purus. \n\t\t\t\tPhasellus imperdiet aliquet ante non fringilla. \n\t\t\t\tFusce pharetra nisi ut lacus placerat, sed porta nulla aliquet. \n\t\t\t\tUt consectetur odio et tincidunt rhoncus. \n\t\t\t\tCurabitur aliquam in lacus eu lobortis. \n\t\t\t\tFusce ac laoreet nisl, eu pulvinar erat.",
 	"mapsInfo": [
 		{"format": "RGBA", "filter": "LINEAR", "url": "https://ystyr.github.io/data/textures/rust.jpg"}
 	],
 	"include": [
 		"dSqrt", "hash21", "rot2d"
 	],
-	"body": "https://ystyr.github.io/data/shaders/chtulhu/chtulhuBody.src",
-	"description": "Sed velit libero, venenatis et sagittis a, facilisis quis purus. \n\t\t\t\tPhasellus imperdiet aliquet ante non fringilla. \n\t\t\t\tFusce pharetra nisi ut lacus placerat, sed porta nulla aliquet. \n\t\t\t\tUt consectetur odio et tincidunt rhoncus. \n\t\t\t\tCurabitur aliquam in lacus eu lobortis. \n\t\t\t\tFusce ac laoreet nisl, eu pulvinar erat."
+	"body": "https://ystyr.github.io/data/shaders/chtulhu/chtulhuBody.src"
 }

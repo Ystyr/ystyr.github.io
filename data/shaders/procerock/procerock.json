@@ -1,4 +1,6 @@
 {
+	"title": "Nyan Boulder",
+	"description": "Phasellus imperdiet aliquet ante non fringilla. \n\t\t\t\tFusce pharetra nisi ut lacus placerat, sed porta nulla aliquet. \n\t\t\t\tUt consectetur odio et tincidunt rhoncus. \n\t\t\t\tCurabitur aliquam in lacus eu lobortis. \n\t\t\t\tFusce ac laoreet nisl, eu pulvinar erat.",
     "mapsInfo": [
         {"format": "LUMINANCE_ALPHA", "filter": "LINEAR", "url": "https://ystyr.github.io/data/textures/dirt.jpg"},
         {"format": "RGBA", "filter": "NEAREST", "url": "https://ystyr.github.io/data/textures/cats.png"},
@@ -7,6 +9,5 @@
 	"include": [
 		"halfUp", "halfDown", "sin01", "cos01", "dSqrt", "rot2d", "sdBox", "getRayDir"
 	],
-	"body": "https://ystyr.github.io/data/shaders/procerock/procerockBody.src",
-	"description": "Phasellus imperdiet aliquet ante non fringilla. \n\t\t\t\tFusce pharetra nisi ut lacus placerat, sed porta nulla aliquet. \n\t\t\t\tUt consectetur odio et tincidunt rhoncus. \n\t\t\t\tCurabitur aliquam in lacus eu lobortis. \n\t\t\t\tFusce ac laoreet nisl, eu pulvinar erat."
+	"body": "https://ystyr.github.io/data/shaders/procerock/procerockBody.src"
 }
