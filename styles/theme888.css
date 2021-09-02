@@ -58,8 +58,13 @@ button:active {
 	padding: 10px;
 	color: #d7ffff;
 	font-family: verdana;
+	font-size: 1vw;
 	font-style: bold;
 	text-align: center;
+}
+
+.regular.left {
+	text-align: left;
 }
 
 .section {

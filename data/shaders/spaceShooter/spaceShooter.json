@@ -1,6 +1,6 @@
 {
 	"title": "Space Shooter",
-	"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer a metus placerat, finibus elit at, interdum ipsum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc viverra aliquet nibh ac finibus. Phasellus mollis massa tortor, vitae consequat turpis pellentesque a. Praesent non viverra nunc. Fusce consequat ligula at pellentesque viverra. ",
+	"description": "Mathematically constructed SDF assets for my wife's programming course assignment. \n\tEverything is drawn by code in GLSL, no sprites or third-party assets involved \n\thttps://github.com/aninternetian/space-shooter50\n\t",
 	"mapsInfo": [],
 	"include": [
 		"halfUp", "dSqrt", "hash21", "hash22", "noise", "rot2d", "noise2d", "perlin"
