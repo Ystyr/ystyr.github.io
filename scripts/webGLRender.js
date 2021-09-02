@@ -1,36 +1,17 @@
-const buffersNames = {
-    attributes: {
-        vertPos: "a_position"
-    },
-    uniforms: {
-        resolution: "u_resolution",
-        mouse: "u_mouse",
-        time: "u_time",
-        sampler: "u_sampler",
-        transforms: "u_transform"
-    },
-    varyings: {
-        uv: "u_texCoord"
-    }
-}
-const a_names = buffersNames.attributes;
-const u_names = buffersNames.uniforms;
-const v_names = buffersNames.varyings;
-
-function isPowerOf2(value) {
-    return (value & (value - 1)) == 0;
-}
-
 class webGLRender 
 {
-    constructor(canvas, vertShaderSrc, fragShaderSrc, texUrl) 
+    constructor(gl, vertShaderSrc, fragShaderSrc, texData, buffersNames) 
     { 
-        const gl = canvas.getContext("webgl");
+        const a_names = buffersNames.attributes;
+        const u_names = buffersNames.uniforms;
+        const v_names = buffersNames.varyings;
         const vertexShader = this.createShader(gl, gl.VERTEX_SHADER, vertShaderSrc);
         const fragmentShader = this.createShader(gl, gl.FRAGMENT_SHADER, fragShaderSrc);
         const program = this.createProgram(gl, vertexShader, fragmentShader);
-        const positionAttributeLocation = gl.getAttribLocation(program, buffersNames.attributes.vertPos);
+        const positionAttributeLocation = gl.getAttribLocation(program, a_names.vertPos);
         const positionBuffer = gl.createBuffer();
+        const uSamplersLocations = [];
+        const samplers = [];
         const verts = [
             -1, -1,  -1, 1,  1, 1, 
             -1, -1,  1, 1,  1, -1,
@@ -49,12 +30,20 @@ class webGLRender
             0,        //stride: 0 = move forward size * sizeof(type) each iteration to get the next position
             0         //offset:start at the beginning of the buffer
         );
+        for (let i = 0; i < texData.length; i++) {
+            samplers.push(
+                this.loadTexture(gl, texData[i], gl.TEXTURE0 + i)
+                );
+            uSamplersLocations.push(
+                gl.getUniformLocation(program, u_names.sampler + i)
+                );
+        }
         this.positionAttributeLocation = positionAttributeLocation;
         this.resolutionUniformLocation = gl.getUniformLocation(program, u_names.resolution);
         this.mouseUniformLocation = gl.getUniformLocation(program, u_names.mouse);
         this.timeUniformLocation = gl.getUniformLocation(program, u_names.time);
-        this.uSamplerLocation = gl.getUniformLocation(program, u_names.sampler);
-        this.texture = this.loadTexture(gl, texUrl);
+        this.uSamplersLocations = uSamplersLocations;
+        this.samplers = samplers;
         this.request;
         this.startTime = Date.now();
         this.primitiveType = gl.TRIANGLES;
@@ -63,48 +52,66 @@ class webGLRender
         this.then = 0;
         this.gl = gl;
         this.getMsePos = () => mousePos;
+
     }
 
     setMousePosGetter (getter) {
         this.getMsePos = getter;
     }
 
-    loadTexture(gl, url) 
-    {
+    doDefaultTesture (gl) {
         const texture = gl.createTexture();
-        const image = new Image();
-       
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.texImage2D(
             gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, 
-            gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 255, 255])
+            gl.RGBA, gl.UNSIGNED_BYTE,new Uint8Array([255, 0, 255, 255])
             );
+        return texture;
+    }
 
+    loadTexture(gl, texData, activeTexture) 
+    {
+        const image = new Image();
+        const texture = gl.createTexture();
+
+        gl.activeTexture(activeTexture);
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+        gl.texImage2D(
+            gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, 
+            gl.RGBA, gl.UNSIGNED_BYTE,new Uint8Array([255, 0, 255, 255])
+            );
+        
         image.onload = function() {
+            gl.activeTexture(activeTexture);
             gl.bindTexture(gl.TEXTURE_2D, texture);
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+            gl.texImage2D(gl.TEXTURE_2D, 0, texData.format, texData.format, gl.UNSIGNED_BYTE, image);
 
             if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
                 gl.generateMipmap(gl.TEXTURE_2D);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, texData.filter);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, texData.filter);
             } 
             else {
                 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
                 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.BILINEAR);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, texData.filter);
             }
         };
         image.crossOrigin = 'anonymous';
-        image.src = url;
+        image.src = texData.url;
         return texture;
     }
 
     render (time) { 
         const gl = this.gl;
         const msePos = this.getMsePos();
+        const samplersNum = this.uSamplersLocations.length;
         gl.uniform1f(this.timeUniformLocation, time);
-        gl.uniform2f(this.resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
         gl.uniform2f(this.mouseUniformLocation, msePos[0], msePos[1]);
-        gl.uniform1i(this.uSamplerLocation, 0);
+        gl.uniform2f(this.resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
+        for (let i = 0; i < samplersNum; i++) {
+            gl.uniform1i(this.uSamplersLocations[i], i);  
+        }
         gl.drawArrays(this.primitiveType, this.offset, this.count); 
     }
 
@@ -148,4 +155,8 @@ class webGLRender
     clearRequest () {
         this.request = undefined;
     }
+}
+
+function isPowerOf2(value) {
+    return (value & (value - 1)) == 0;
 }

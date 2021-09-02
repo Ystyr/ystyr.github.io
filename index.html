@@ -6,39 +6,135 @@
 <head>
 	<title>Ysryr</title>
 	<script src="scripts/mouseUtils.js"></script>
-	<script src="scripts/shadersSrcs.js"></script>
 	<script src="scripts/webGLRender.js"></script>
+	<script src="scripts/shaderGenUtils.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script>
-	function titleRender () {
-		const canvassHello = document.getElementById('title');
-		const wglRend = new webGLRender(
-			canvassHello, shaderSrc.commonVert, 
-			shaderSrc.titleFrag, "https://ystyr.github.io/data/textures/sdfFont.png"
-		);
-		let activeCanvas;
-		canvassHello.onmouseover = () => activeCanvas = canvassHello;
-		canvassHello.onmouseout = () => activeCanvas = undefined;
-		wglRend.setMousePosGetter(() => {
-			const nFunc = (func, v) => func(v) * .4 + .4;
-			const n_sin = t => nFunc(Math.sin, t);
-			const n_cos = t => nFunc(Math.cos, t);
-			const time = wglRend.then;
-			const width = canvassHello.clientWidth;
-			const height = canvassHello.clientHeight;
-			const fakeMsePos = [n_sin(time) * width, n_cos(time) * height - height * .5];
-			const msePos = [canvMousePos[0] * .5, canvMousePos[1] * .5];
-			return activeCanvas? msePos: fakeMsePos;
-		});
-		wglRend.play(0);
-	}
+	
+	const shaderSharedInfoUrl = 'https://ystyr.github.io/data/shaders/shaderShared.json';
+	
+	const shaderInfosUrls = [
+		'https://ystyr.github.io/data/shaders/spaceShooter/spaceShooter.json',
+		'https://ystyr.github.io/data/shaders/chtulhu/chtulhu.json',
+		'https://ystyr.github.io/data/shaders/obsidian/obsidian.json',
+		'https://ystyr.github.io/data/shaders/procerock/procerock.json',
+		'https://ystyr.github.io/data/shaders/KIFSFract/KIFSFract.json',
+		'https://ystyr.github.io/data/shaders/hexgrid/hexgrid.json',
+		"https://ystyr.github.io/data/shaders/digital/digital.json",
+		"https://ystyr.github.io/data/shaders/title/title.json"	
+	];
+
 	function onLoad () {
-		const horizontalLayoutManager = {
+
+		const gls = [];
+		const pages = [];
+		const renders = []; 
+		const pagesNum = shaderInfosUrls.length - 1;
+		const layout = document.getElementsByClassName('horizontalLayout')[0];
+		const titCanv = document.getElementById('title');
+		const createGaleryPages = () => {
+			for (let i = 0; i < pagesNum; i++) {
+				const page = document.createElement('div');
+				const canv = document.createElement('canvas');
+				const textbox = document.createElement('div');
+				const title = document.createElement('h3');
+				const description = document.createElement('b');
+				
+				page.className = 'slidepage';
+				page.classList.add('slideRight');
+
+				textbox.className = 'textbox';
+				title.className = 'title';
+				title.innerHTML = "not loaded";
+				description.className = 'description';
+				description.innerHTML = 'not loaded';
+				
+				canv.width = 1024;
+				canv.height = 768;
+				canv.classList.add('gallery');
+				canv.onmousemove = e => updateCanvMouse(canv, e);
+
+				pages.push(page);
+
+				textbox.appendChild(title);
+				textbox.appendChild(description);
+				page.appendChild(textbox);
+				page.appendChild(canv);
+				layout.appendChild(page);
+
+				const gl = canv.getContext("webgl2");
+				gls.push(gl);
+			}
+			pages[0].style.animationPlayState = 'running';
+		}
+		const getOnGLReadyEvents = () => {
+			const result = [];
+			result.push((rend, canvId) => {
+				renders[canvId] = rend;
+				rend.setMousePosGetter(() => canvMousePos);
+				rend.play(1);
+			});
+			for (let i = 1; i < pagesNum; i++) {
+				result.push((rend, canvId) => {
+					renders[canvId] = rend;
+					rend.setMousePosGetter(() => canvMousePos);
+					rend.render(1);
+				});
+			}	
+			//!@ title render callback	
+			result.push(
+				rend => {
+					let isMouseOver;
+					titCanv.onmouseover = () => isMouseOver = true;
+					titCanv.onmouseout = () => isMouseOver = false;
+					rend.setMousePosGetter(() => {
+						const nFunc = (func, v) => func(v) * .4 + .4;
+						const n_sin = t => nFunc(Math.sin, t * 2);
+						const n_cos = t => nFunc(Math.cos, t);
+						const time = rend.then;
+						const width = titCanv.clientWidth;
+						const height = titCanv.clientHeight;
+						const fakeMsePos = [n_sin(time) * width, n_cos(time) * height - height * .5];
+						const msePos = [canvMousePos[0] * .5, canvMousePos[1] * .5];
+						return isMouseOver? msePos: fakeMsePos;
+					});
+					rend.play(0);
+				}
+			)
+			return result;
+		}
+		
+		createGaleryPages();
+		gls.push(titCanv.getContext("webgl2"));
+
+		initGlsContent(
+			gls, shaderSharedInfoUrl, shaderInfosUrls, 
+			getOnGLReadyEvents(), (shadInfo, idx) => {
+				if (idx < pagesNum) {
+					const page = pages[idx];
+					const h = page.getElementsByTagName('h3')[0];
+					const b = page.getElementsByTagName('b')[0];
+					h.innerHTML = shadInfo.title;
+					b.innerHTML = shadInfo.description;
+				}
+			}
+		);
+		
+		const galleryControls = {
 			currentPageIdx: 0,
 			init: () => {
-				const contrBtns = document.getElementsByClassName('layoutControl');
-				const pages = document.getElementsByClassName('slidepage');
-				const btnPrev = contrBtns[0];
-				const btnNext = contrBtns[1];
+				const btnPrev = document.createElement('img');
+				const btnNext = document.createElement('img');
+				const createArrows = () => {
+					const space = document.createElement('h');
+					btnPrev.className = btnNext.className = 'layoutControl';
+					btnPrev.src = 'data/images/arrowL.png';
+					btnNext.src = 'data/images/arrowR.png';
+					btnPrev.classList.add('left');
+					btnNext.classList.add('right');
+					layout.appendChild(btnPrev);
+					layout.appendChild(btnNext);
+				};
 				const disable = btn => {
 					btn.enabled = false;
 					btn.classList.add('disabled');
@@ -52,7 +148,7 @@
 
 					const currPage = pages[this.currentPageIdx];
 					const nextPage = pages[idx];
-					
+
 					currPage.classList.add(classOutName);
 					currPage.style.animationPlayState = 'running';
 					
@@ -63,10 +159,12 @@
 						nextPage.style.animationPlayState = 'paused';
 						nextPage.className = 'slidepage';
 					};	
-
 					return true;
-
 				} 
+				const playControl = (toStopIdx, toPlayIdx) => {
+					renders[toStopIdx].stop();
+					renders[toPlayIdx].play();
+				}
 				const next = () => {
 					const idx = this.currentPageIdx + 1;
 					if (animatePages(btnNext, idx, 'slideRight', 'hideRight')) {
@@ -76,6 +174,7 @@
 						if (idx == 1) {
 							enable(btnPrev);
 						}
+						playControl(this.currentPageIdx, idx);
 					}
 					this.currentPageIdx = idx;
 				}
@@ -88,10 +187,13 @@
 						if (idx == pages.length - 2) {
 							enable(btnNext);
 						}
+						playControl(this.currentPageIdx, idx);
 					}
 					this.currentPageIdx = idx;
 				}
 				this.currentPageIdx = 0;
+
+				createArrows();
 
 				btnPrev.onclick = prev;
 				disable(btnPrev);
@@ -100,35 +202,12 @@
 				btnNext.onclick = next; 
 			}
 		}
-		horizontalLayoutManager.init();
-		titleRender();
-
-		const testImagesUrls = [
-			"https://www.w3schools.com/howto/img_woods.jpg",
-			"https://www.w3schools.com/howto/img_5terre.jpg",
-			"https://www.w3schools.com/howto/img_mountains.jpg",
-			"https://www.w3schools.com/howto/img_lights.jpg"
-		]
-		const slidepages = document.getElementsByClassName('slidepage');
-		for (let i = 0; i < slidepages.length; i++) {
-			const page = slidepages[i];
-			const img = page.getElementsByTagName('img')[0];
-			const canv = page.getElementsByTagName('canvas')[0];
-			const ctx = canv.getContext('2d');
-			page.classList.add('slideRight');
-			canv.width = 600;
-			canv.height = 400;
-			ctx.drawImage(img, 0, 0);
-			canv.onclick = () => {
-				canv.classList.toggle('expand');
-			};
-		}
-		slidepages[0].style.animationPlayState = 'running';
+		galleryControls.init();
 	}		
 	</script>
 </head>
 <body onload=onLoad() style="max-width:1300px">
-<div class="header">
+<div class="regular">
 	<img src="data/images/AlienDevice.jpg" alt="Image">
 	<table style="width:80%; margin: auto;">
 		<tr>
@@ -140,101 +219,11 @@
 			<td><button><h2>TL;DR</h2></button></td>
 		</tr>
 	</table>
-	<!--
-	<img src="https://ystyr.github.io/data/textures/rust.jpg">
-	<img src="https://ystyr.github.io/data/textures/pebbles.png">
-	<img src="https://ystyr.github.io/data/textures/dirt.jpg">
-	<img src="https://ystyr.github.io/data/textures/cats.png">
-	-->
 </div>
 
-<div class="about">
-	<h1>About</h1>	
-	<div class="horizontalLayout">	
-		<div class="slidepage">	
-			<img src="https://www.w3schools.com/howto/img_woods.jpg" hidden='true'>
-			<canvas></canvas>
-			<p>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-				Integer a metus placerat, finibus elit at, interdum ipsum. 
-				Class aptent taciti sociosqu ad litora torquent per conubia nostra, 
-				per inceptos himenaeos. Nunc viverra aliquet nibh ac finibus. 
-				Phasellus mollis massa tortor, vitae consequat turpis pellentesque a. 
-				Praesent non viverra nunc. Fusce consequat ligula at pellentesque viverra. 
-				Aliquam at massa urna. Cras vel lacus ullamcorper nunc pulvinar viverra sit amet a neque. 
-				Suspendisse sed egestas mauris. Aenean laoreet dictum augue tempor porttitor. 
-				Sed velit libero, venenatis et sagittis a, facilisis quis purus. 
-				Phasellus imperdiet aliquet ante non fringilla. 
-				Fusce pharetra nisi ut lacus placerat, sed porta nulla aliquet. 
-				Ut consectetur odio et tincidunt rhoncus. 
-				Curabitur aliquam in lacus eu lobortis. 
-				Fusce ac laoreet nisl, eu pulvinar erat.
-			</p>
-		</div>
-		<div class="slidepage">
-			<img src="https://www.w3schools.com/howto/img_woods.jpg" hidden='true'>
-			<canvas></canvas>
-			<p>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-				Integer a metus placerat, finibus elit at, interdum ipsum. 
-				Class aptent taciti sociosqu ad litora torquent per conubia nostra, 
-				per inceptos himenaeos. Nunc viverra aliquet nibh ac finibus. 
-				Phasellus mollis massa tortor, vitae consequat turpis pellentesque a. 
-				Praesent non viverra nunc. Fusce consequat ligula at pellentesque viverra. 
-				Aliquam at massa urna. Cras vel lacus ullamcorper nunc pulvinar viverra sit amet a neque. 
-				Suspendisse sed egestas mauris. Aenean laoreet dictum augue tempor porttitor. 
-				Sed velit libero, venenatis et sagittis a, facilisis quis purus. 
-				Phasellus imperdiet aliquet ante non fringilla. 
-				Fusce pharetra nisi ut lacus placerat, sed porta nulla aliquet. 
-				Ut consectetur odio et tincidunt rhoncus. 
-				Curabitur aliquam in lacus eu lobortis. 
-				Fusce ac laoreet nisl, eu pulvinar erat.
-			</p>
-		</div>
-		<div class="slidepage">
-			<img src="https://www.w3schools.com/howto/img_woods.jpg" hidden='true'>
-			<canvas></canvas>
-			<p>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-				Integer a metus placerat, finibus elit at, interdum ipsum. 
-				Class aptent taciti sociosqu ad litora torquent per conubia nostra, 
-				per inceptos himenaeos. Nunc viverra aliquet nibh ac finibus. 
-				Phasellus mollis massa tortor, vitae consequat turpis pellentesque a. 
-				Praesent non viverra nunc. Fusce consequat ligula at pellentesque viverra. 
-				Aliquam at massa urna. Cras vel lacus ullamcorper nunc pulvinar viverra sit amet a neque. 
-				Suspendisse sed egestas mauris. Aenean laoreet dictum augue tempor porttitor. 
-				Sed velit libero, venenatis et sagittis a, facilisis quis purus. 
-				Phasellus imperdiet aliquet ante non fringilla. 
-				Fusce pharetra nisi ut lacus placerat, sed porta nulla aliquet. 
-				Ut consectetur odio et tincidunt rhoncus. 
-				Curabitur aliquam in lacus eu lobortis. 
-				Fusce ac laoreet nisl, eu pulvinar erat.
-			</p>
-		</div>
-		<div class="slidepage">
-			<img src="https://www.w3schools.com/howto/img_woods.jpg" hidden='true'>
-			<canvas></canvas>
-			<p>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-				Integer a metus placerat, finibus elit at, interdum ipsum. 
-				Class aptent taciti sociosqu ad litora torquent per conubia nostra, 
-				per inceptos himenaeos. Nunc viverra aliquet nibh ac finibus. 
-				Phasellus mollis massa tortor, vitae consequat turpis pellentesque a. 
-				Praesent non viverra nunc. Fusce consequat ligula at pellentesque viverra. 
-				Aliquam at massa urna. Cras vel lacus ullamcorper nunc pulvinar viverra sit amet a neque. 
-				Suspendisse sed egestas mauris. Aenean laoreet dictum augue tempor porttitor. 
-				Sed velit libero, venenatis et sagittis a, facilisis quis purus. 
-				Phasellus imperdiet aliquet ante non fringilla. 
-				Fusce pharetra nisi ut lacus placerat, sed porta nulla aliquet. 
-				Ut consectetur odio et tincidunt rhoncus. 
-				Curabitur aliquam in lacus eu lobortis. 
-				Fusce ac laoreet nisl, eu pulvinar erat.
-			</p>
-		</div>
-		<img src="data/images/arrowL.png" class="layoutControl"></img>
-		<h1 style="opacity: 0;">EMPTY SPACE FILLER</h1>
-		<img src="data/images/arrowR.png" class="layoutControl"></img>
-	</div>
+<div class="section">
+	<h1 class="sectionTitle">Learn About Me!</h1>	
+	<p class="regular">
 	Hello! I'm versatile ambitious Software Engineer with 10+ yearss of experience (mostly gamedev). 
 	The specifics of the industry set high requirements to versatile skills, being a game developer, 
 	one can hardly work in a single area of expertice. 
@@ -243,8 +232,14 @@
 	code generation, gui from scratch (why and how), google partnership, low-level implementation 
 	custom rendering, light-transport simulation, postprocesssing, particles, time,
 	leading, recruting
+	</p>
+	<br><br><br><br><br><br><br><br>
 </div>
-<footer class="header">
+</div>
+	<h1 class="sectionTitle">Gallery</h1>	
+	<div class="horizontalLayout"></div>
+</div>
+<footer class="regular">
 	<p>Author: Aleksei Ystyr Andreev</p>
 	<p>© All rights reserved</p>
 	<p><a href="mailto:ravenametr@gmail.com">ravenametr@gmail.com</a></p>
