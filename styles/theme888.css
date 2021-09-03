@@ -52,6 +52,21 @@ button:active {
 	color: #eeffff;
 }
 
+a:link  {
+	color: #00b3ff;
+}
+
+a:visited {
+	color: #007bff;
+}
+
+a:hover {
+	color: burlywood;
+}
+
+a:active {
+	color: #00e5ff;
+}
 
 .regular {
 	margin: auto;

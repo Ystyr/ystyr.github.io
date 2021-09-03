@@ -1,6 +1,6 @@
 {
 	"title": "Chtulhu World",
-	"description": "Sed velit libero, venenatis et sagittis a, facilisis quis purus. \n\t\t\t\tPhasellus imperdiet aliquet ante non fringilla. \n\t\t\t\tFusce pharetra nisi ut lacus placerat, sed porta nulla aliquet. \n\t\t\t\tUt consectetur odio et tincidunt rhoncus. \n\t\t\t\tCurabitur aliquam in lacus eu lobortis. \n\t\t\t\tFusce ac laoreet nisl, eu pulvinar erat.",
+	"description": "Sed velit libero, venenatis et sagittis a, facilisis quis purus. Both satisfying and terrifying visual effect is based on Truchet tiling flow wrapped in polar coordinates. Also demonstrates some advanced texturing and pseudo 3d shading.",
 	"mapsInfo": [
 		{"format": "RGBA", "filter": "LINEAR", "url": "https://ystyr.github.io/data/textures/rust.jpg"}
 	],
