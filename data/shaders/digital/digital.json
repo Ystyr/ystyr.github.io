@@ -1,6 +1,6 @@
 {
 	"title": "Digital Noise",
-	"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nInteger a metus placerat, finibus elit at, interdum ipsum. \nClass aptent taciti sociosqu ad litora torquent per conubia nostra, \nper inceptos himenaeos. Nunc viverra aliquet nibh ac finibus. \nPhasellus mollis massa tortor, vitae consequat turpis pellentesque a.\nPraesent non viverra nunc. Fusce consequat ligula at pellentesque viverra. ",
+	"description": "Experiments with noise management. In a way, that it looks more than just noise but still clearly remains to be a noise",
     "mapsInfo": [],
 	"include": [
         "hash21"

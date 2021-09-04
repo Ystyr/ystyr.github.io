@@ -1,6 +1,6 @@
 {
 	"title": "Obsidian Shards",
-	"description": "A render based on 3rd-order Worley pattern (grid based implementation of Voronoi diagram) with multiple tricks, like courners rounding, to make it more visually appealing.",
+	"description": "A render based on 3rd-order Worley pattern (grid based implementation of Voronoi diagram) with multiple tricks, like courners rounding, and imitative lighting to make it more visually appealing.",
     "mapsInfo": [],
 	"include": [
 		"halfUp", "dSqrt", "hash21", "hash22", "noise", "rot2d", "smin2d"
