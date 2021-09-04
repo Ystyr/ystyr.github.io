@@ -1,6 +1,6 @@
 {
 	"title": "Nyan Boulder",
-	"description": "Phasellus imperdiet aliquet ante non fringilla. \n\t\t\t\tFusce pharetra nisi ut lacus placerat, sed porta nulla aliquet. \n\t\t\t\tUt consectetur odio et tincidunt rhoncus. \n\t\t\t\tCurabitur aliquam in lacus eu lobortis. \n\t\t\t\tFusce ac laoreet nisl, eu pulvinar erat.",
+	"description": "Procedural object texturing. Procedural object procedural texturing. Procedural object texturing by the sprite animation. Also simply cool",
     "mapsInfo": [
         {"format": "LUMINANCE_ALPHA", "filter": "LINEAR", "url": "https://ystyr.github.io/data/textures/dirt.jpg"},
         {"format": "RGBA", "filter": "NEAREST", "url": "https://ystyr.github.io/data/textures/cats.png"},
