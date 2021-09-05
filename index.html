@@ -215,16 +215,16 @@
 	<img src="data/images/AlienDevice.jpg" alt="Image">
 	<table style="width:80%; margin: auto;">
 		<tr>
-			<td><button><h2>About</h2></button></td>
-			<td><button><h2>Works</h2></button></td>
+			<td><a href="#welcome"><button><h2>About</h2></button></a></td>
+			<td><a href="#gallery"><button><h2>Gallery</h2></button></a></td>
 			<td><canvas id='title' onmousemove="updateCanvMouse(this, event)" width="460"></canvas></td>
-			<td><button><h2>Resume</h2></button></td>
-			<td><button><h2>Contacts</h2></button></td>
+			<td><a href="#resume"><button><h2>Resume</h2></button</a></td>
+			<td><a href="#contact"><button><h2>Contacts</h2></button></a></td>
 		</tr>
 	</table>
 </div>
 <br><br>
-<div class="section">
+<div class="section" id="welcome">
 	<h1 class="sectionTitle">About</h1>	
 	<div class="regular">	
 		Welcome! My name is Alexey (Aleksei) Andreev, aka Ystyr. I'm living in Singapore (PR).
@@ -244,7 +244,7 @@
 	<!--</p>-->
 	<p class="title">
 		Kwest Go Demo: Watch fullscreen.
-		<iframe src="https://drive.google.com/file/d/1_RwAX_Vt538O9-WuFuo0asEfRThjJkuM/preview" allow="fullscreen"></iframe>
+		<iframe class="videoplayer" src="https://drive.google.com/file/d/1_RwAX_Vt538O9-WuFuo0asEfRThjJkuM/preview" allow="fullscreen"></iframe>
 	</p>
 	<p class="regular">
 		Not for the sake of bragging, but to show my involvement: the CEO of Kwest, Omeed Shams used to say that the game wouldn't be even close to what it is without me, or maybe wouldn't be at all.
@@ -261,7 +261,7 @@
 	</p>
 	<p class="title">
 		Toy Master: Watch fullscreen.
-		<iframe src="https://drive.google.com/file/d/1sEiyKJh32xyk4BpUyJDCmdN-lhTrr2hE/preview" allow="fullscreen"></iframe>
+		<iframe class="videoplayer" src="https://drive.google.com/file/d/1sEiyKJh32xyk4BpUyJDCmdN-lhTrr2hE/preview" allow="fullscreen"></iframe>
 	</p>
 	<p class="regular">
 		Shortly thereafter this game failed hyper-casual marketing tests, I quit Kwest to start my new project under the code name: 
@@ -270,15 +270,21 @@
 	<br><br><br><br><br><br><br><br>
 </div>
 <div class="section">	
-	<h1 class="sectionTitle">Gallery</h1>	
-	<p class="regular left">
+	<h1 class="sectionTitle" id="gallery">Gallery</h1>	
+	<p class="regular">
 		This is some of my little personal weekends works. 
 		Shaders I consider interesting enough to attract your attention and for a demonstration of a level of complexity I like to handle. 
-		I enjoy creating such things in a form of mathematical and engineering problem solving.   
+		Don't call me an artist, I enjoy creating such things in a form of mathematical and engineering problem-solving. Click on arrow icons to navigate. 
 	</p>
 </div>
 <div class="horizontalLayout"></div>
-<div class="section">	
+<br><br><br><br><br><br><br><br>
+<div class="section" id="resume">	
+	<h1 class="sectionTitle">Resum-e<br><br><br></h1>	
+	<iframe class="pdf" allowfullscreen src="data/other/Resume-Alexey-Andreev.pdf"></iframe>
+</div>
+<br><br><br><br><br><br><br><br>
+<div class="section" id="contact">	
 	<h1 class="sectionTitle">Contacts</h1>	
 	<div class="regular">
 		GET IN TOUCH
