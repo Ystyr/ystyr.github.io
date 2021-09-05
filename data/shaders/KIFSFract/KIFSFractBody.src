@@ -7,7 +7,7 @@ float sinOS(float value, float offset) {
 }
 
 void main () {
-    vec2 uv = .62 * (FRAG_XY * 2. - 1.) / RES.y * RES.xy + vec2(0, .05);
+    vec2 uv = .6 * (FRAG_XY * 2. - 1.) / RES.y * RES.xy + vec2(0, .05);
     vec2 m = MSE / RES.xy;
     vec3 col = vec3(0);
     float sin_osT = sinOS(T, .25);
