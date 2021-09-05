@@ -1,6 +1,6 @@
 {
 	"title": "KIFS Fractals",
-	"description": "Fusce pharetra nisi ut lacus placerat, sed porta nulla aliquet. \n\t\t\t\tUt consectetur odio et tincidunt rhoncus. \n\t\t\t\tCurabitur aliquam in lacus eu lobortis. \n\t\t\t\tFusce ac laoreet nisl, eu pulvinar erat.",
+	"description": "Kaleidoscopic Fractals: Folding SDF of the Koch Snowflake to Sierpinski triangle and back",
     "mapsInfo": [
         {"format": "RGBA", "filter": "LINEAR", "url": "https://ystyr.github.io/data/textures/stars.jpg"}
 	],
