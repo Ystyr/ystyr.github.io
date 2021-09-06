@@ -1,6 +1,6 @@
 {
 	"title": "Nyan Boulder",
-	"description": "Procedural object texturing. Procedural object procedural texturing. Procedural object texturing by the sprite animation. Also simply cool. Use mouse to orbit camera",
+	"description": "Procedural object texturing including procedural texturing and texturing by the sprite animation. Also simply cool. Use mouse to orbit camera",
     "mapsInfo": [
         {"format": "LUMINANCE_ALPHA", "filter": "LINEAR", "url": "https://ystyr.github.io/data/textures/dirt.jpg"},
         {"format": "RGBA", "filter": "NEAREST", "url": "https://ystyr.github.io/data/textures/cats.png"},
