@@ -1,6 +1,6 @@
 {
 	"title": "KIFS Fractals",
-	"description": "Kaleidoscopic Fractals: When you folding your Koch Snowflake into the Sierpinski triangle, do this with style",
+	"description": "Kaleidoscopic Fractals: When folding your Koch Snowflake into the Sierpinski triangle, do this with style",
     "mapsInfo": [
         {"format": "RGBA", "filter": "LINEAR", "url": "https://ystyr.github.io/data/textures/stars.jpg"}
 	],

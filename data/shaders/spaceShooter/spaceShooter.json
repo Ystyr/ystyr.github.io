@@ -1,6 +1,6 @@
 {
 	"title": "Space Shooter",
-	"description": "Mathematically constructed SDF assets for my wife's programming course assignment. \n\tEverything is drawn by code in GLSL, no sprites or third-party assets involved. \n\t <a href='https://github.com/aninternetian/space-shooter50'>link to the github project</a>\n\t",
+	"description": "Mathematically constructed SDF assets for my wife's programming course assignment <a href='https://github.com/aninternetian/space-shooter50'>link to the github project</a> \n\tEverything is drawn by code in GLSL, no sprites or third-party assets involved. \n\t",
 	"mapsInfo": [],
 	"include": [
 		"halfUp", "dSqrt", "hash21", "hash22", "noise", "rot2d", "noise2d", "perlin"

@@ -6,8 +6,9 @@ body {
 	border: 1px solid #436b7f;
 }
 
+
 canvas {
-	cursor: pointer;	
+	cursor: crosshair;	
 }
 
 canvas.gallery {

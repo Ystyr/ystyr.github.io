@@ -1,6 +1,6 @@
 {
 	"title": "Hexagonal Grid",
-	"description": "A visual effect based on the hexagonal grid. You can do many things with the math of hexagonal tiling. But I did this.",
+	"description": "A visual effect based on the hexagonal grid. There are endless things which can be done with the math of hexagonal tiling, here's one which I did.",
     "mapsInfo": [],
 	"include": [
         "dSqrt"

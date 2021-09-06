@@ -8,207 +8,8 @@
 	<script src="scripts/mouseUtils.js"></script>
 	<script src="scripts/webGLRender.js"></script>
 	<script src="scripts/shaderGenUtils.js"></script>
+	<script src="scripts/main.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script>
-	
-	const shaderSharedInfoUrl = 'https://ystyr.github.io/data/shaders/shaderShared.json';
-	
-	const shaderInfosUrls = [
-		'https://ystyr.github.io/data/shaders/spaceShooter/spaceShooter.json',
-		'https://ystyr.github.io/data/shaders/chtulhu/chtulhu.json',
-		'https://ystyr.github.io/data/shaders/obsidian/obsidian.json',
-		'https://ystyr.github.io/data/shaders/procerock/procerock.json',
-		'https://ystyr.github.io/data/shaders/KIFSFract/KIFSFract.json',
-		'https://ystyr.github.io/data/shaders/hexgrid/hexgrid.json',
-		"https://ystyr.github.io/data/shaders/digital/digital.json",
-		"https://ystyr.github.io/data/shaders/title/title.json"	
-	];
-
-	function onLoad () {
-
-		const gls = [];
-		const pages = [];
-		const renders = []; 
-		const pagesNum = shaderInfosUrls.length - 1;
-		const layout = document.getElementsByClassName('horizontalLayout')[0];
-		const titCanv = document.getElementById('title');
-		const createGaleryPages = () => {
-			for (let i = 0; i < pagesNum; i++) {
-				const page = document.createElement('div');
-				const canv = document.createElement('canvas');
-				const textbox = document.createElement('div');
-				const title = document.createElement('h3');
-				const description = document.createElement('b');
-				
-				page.className = 'slidepage slideRight';
-
-				textbox.className = 'textbox';
-				title.className = 'title';
-				title.innerHTML = "not loaded";
-				description.className = 'description';
-				description.innerHTML = 'not loaded';
-				
-				canv.width = 1024;
-				canv.height = 768;
-				canv.classList.add('gallery');
-				canv.onmousemove = e => updateCanvMouse(canv, e);
-
-				pages.push(page);
-
-				textbox.appendChild(title);
-				textbox.appendChild(description);
-				page.appendChild(textbox);
-				page.appendChild(canv);
-				layout.appendChild(page);
-
-				const gl = canv.getContext("webgl2");
-				gls.push(gl);
-			}
-			pages[0].style.animationPlayState = 'running';
-		}
-		const getOnGLReadyEvents = () => {
-			const result = [];
-			result.push((rend, canvId) => {
-				renders[canvId] = rend;
-				rend.setMousePosGetter(() => canvMousePos);
-				rend.play(1);
-			});
-			for (let i = 1; i < pagesNum; i++) {
-				result.push((rend, canvId) => {
-					renders[canvId] = rend;
-					rend.setMousePosGetter(() => canvMousePos);
-					rend.render(1);
-				});
-			}	
-			//!@ title render callback	
-			result.push(
-				rend => {
-					let isMouseOver;
-					titCanv.onmouseover = () => isMouseOver = true;
-					titCanv.onmouseout = () => isMouseOver = false;
-					rend.setMousePosGetter(() => {
-						const nFunc = (func, v) => func(v) * .4 + .4;
-						const n_sin = t => nFunc(Math.sin, t * 2);
-						const n_cos = t => nFunc(Math.cos, t);
-						const time = rend.then;
-						const width = titCanv.clientWidth;
-						const height = titCanv.clientHeight;
-						const fakeMsePos = [n_sin(time) * width, n_cos(time) * height - height * .5];
-						const msePos = [canvMousePos[0] * .5, canvMousePos[1] * .5];
-						return isMouseOver? msePos: fakeMsePos;
-					});
-					rend.play(0);
-				}
-			)
-			return result;
-		}
-		
-		createGaleryPages();
-		gls.push(titCanv.getContext("webgl2"));
-
-		initGlsContent(
-			gls, shaderSharedInfoUrl, shaderInfosUrls, 
-			getOnGLReadyEvents(), (shadInfo, idx) => {
-				if (idx < pagesNum) {
-					const page = pages[idx];
-					const h = page.getElementsByTagName('h3')[0];
-					const b = page.getElementsByTagName('b')[0];
-					h.innerHTML = shadInfo.title;
-					b.innerHTML = shadInfo.description;
-				}
-			}
-		);
-		
-		const galleryControls = {
-			currentPageIdx: 0,
-			init: () => {
-				const btnPrev = document.createElement('img');
-				const btnNext = document.createElement('img');
-				const createArrows = () => {
-					const space = document.createElement('h');
-					btnPrev.className = btnNext.className = 'layoutControl';
-					btnPrev.src = 'data/images/arrowL.png';
-					btnNext.src = 'data/images/arrowR.png';
-					btnPrev.classList.add('left');
-					btnNext.classList.add('right');
-					layout.appendChild(btnPrev);
-					layout.appendChild(btnNext);
-				};
-				const disable = btn => {
-					btn.enabled = false;
-					btn.classList.add('disabled');
-				};
-				const enable = btn => {
-					btn.enabled = true;
-					btn.classList.remove('disabled');
-				};
-				const animatePages = (btn, idx, classInName, classOutName) => {
-					if (! btn.enabled) return false;
-
-					const currPage = pages[this.currentPageIdx];
-					const nextPage = pages[idx];
-
-					currPage.classList.add(classOutName);
-					currPage.style.animationPlayState = 'running';
-					
-					nextPage.className = 'slidepage';
-					nextPage.classList.add(classInName);
-					nextPage.style.animationPlayState = 'running';
-					nextPage.getAnimations()[0].onfinish = e => {
-						nextPage.style.animationPlayState = 'paused';
-						nextPage.className = 'slidepage';
-					};	
-					return true;
-				} 
-				const playControl = (toStopIdx, toPlayIdx) => {
-					renders[toStopIdx].stop();
-					renders[toPlayIdx].play();
-				}
-				const next = () => {
-					const idx = this.currentPageIdx + 1;
-					if (animatePages(btnNext, idx, 'slideRight', 'hideRight')) {
-						if (idx == pages.length - 1) { 
-							disable(btnNext);
-						}
-						if (idx == 1) {
-							enable(btnPrev);
-						}
-						playControl(this.currentPageIdx, idx);
-					}
-					this.currentPageIdx = idx;
-				}
-				const prev = () => {
-					const idx = this.currentPageIdx - 1;
-					if (animatePages(btnPrev, idx, 'slideLeft', 'hideLeft')) {
-						if (idx == 0) { 
-							disable(btnPrev);
-						}
-						if (idx == pages.length - 2) {
-							enable(btnNext);
-						}
-						playControl(this.currentPageIdx, idx);
-					}
-					this.currentPageIdx = idx;
-				}
-				this.currentPageIdx = 0;
-
-				createArrows();
-
-				btnPrev.onclick = prev;
-				disable(btnPrev);
-
-				btnNext.enabled = true;
-				btnNext.onclick = next; 
-			}
-		}
-		galleryControls.init();
-	}	
-	const descr = `
-	Mathematically constructed SDF assets for my wife's programming course assignment. 
-	Everything is drawn by code in GLSL, no sprites or third-party assets involved 
-	https://github.com/aninternetian/space-shooter50
-	`;	
-	</script>
 </head>
 <body onload=onLoad() style="max-width:1300px">
 <div class="regular">
@@ -229,62 +30,77 @@
 	<div class="regular">	
 		Welcome! My name is Alexey (Aleksei) Andreev, aka Ystyr. I'm living in Singapore (PR).
 		This is my website created for shameless self-promotion. Nice to meet you. 
-		Shader alert: if you see some element of the website flickering, lagging or looks weird, try another brouser.  
+		Shader alert: if you see some element of the website flickering, lagging or looks weird, try another browser.
+	</div> 
+	<div class="regular left">
 		I'm a Senior Software Engineer with 10+ years of experience in the game industry.<br>
 		My skillset is a bit of everything, perhaps due to whether specifics of the industry or the explorative nature of myself. 
-		Probably both.<br> So I have been developing production tools/pipelines, implementing different levels of the game logic, game AI systems, rendering systems, VFX systems, postprocessing, procedural generators, audio system controllers, GUI systems from scratch, system infrastructures, data flows, and other software architecture elements. Even some management, hiring, and team building, though I find this part a bit boring.
+		Probably both.
+	</div> 
+	<div class="regular">
+		So I have been developing production tools/pipelines, implementing different levels of the game logic, 
+		game AI systems, rendering systems, VFX systems, postprocessing, procedural generators, audio system controllers, 
+		GUI systems from scratch, system infrastructures, data flows, and other software architecture elements. 
+		Even some management, hiring, and team building, but perhaps it wasn't my strongest side.
 		Apart from that, I've implemented a lot of different API adaptations for different needs.	
-	</div>	
+	</div>
 	<div class="regular left"> 
-		Nevertheless, there are things that I enjoy more, so I probably understand them deeper. 
+		There are things that I enjoy more, so I probably understand them deeper. 
 		These are different rendering problems, mathematical optimization, general-purpose GPU programming, 
 		aka "compute shaders", simulations and procedural generation. 
-		Interested in machine learning researches, I've done some genetic algorithms, Markov chains, but nothing epic, yet.
+		Interested in machine learning researches, I've done some genetic algorithms, Markov chains etc.
 	</div>
 	<p class="regular">
-		A significant part of my carrier was related to Kwest LLC, I've been doing a lot there.
+		A significant part of my career was related to Kwest LLC, I've been doing a lot there.
 		The main product was a location-based AR storytelling game - "Kwest Go". 
 	</p>
 	<p class="title">
-		Kwest Go Demo: Watch fullscreen.
+		<a href="https://drive.google.com/file/d/1_RwAX_Vt538O9-WuFuo0asEfRThjJkuM/preview">Kwest Go Demo: Watch fullscreen.</a>
 		<iframe class="videoplayer" src="https://drive.google.com/file/d/1_RwAX_Vt538O9-WuFuo0asEfRThjJkuM/preview" allow="fullscreen"></iframe>
 	</p>
 	<p class="regular">
-		Not for the sake of bragging, but to show my involvement: the CEO of Kwest, Omeed Shams used to say that the game wouldn't be even close to what it is without me, or maybe wouldn't be at all.
+		To illustrate my involvement; the CEO of Kwest, Omeed Shams used to say that the game wouldn't be even close to what it is without me, or maybe wouldn't be at all.
 		Some of the things I consider significant is: "Kwest Graph" - production toolset allowing to build the whole experience without programmers (although it wasn't perfect and we still had to always tweak and fix something here and there). 	
 	</p>
 	<p class="regular">
-		Another thing, the map rendering system. We've been in partnership with Google and using their API called "MUSK". It was creating tons of meshes for the map, the polycount was hundreds of thousands, besides, processed in thousands of batches. 
+		Another thing, I can be proud of, is the map rendering system. We've been in partnership with Google and using their API called "MUSK". 
+		The problem that it was creating tons of meshes for the map elements, the polycount was hundreds of thousands, and thousands of batches,
 		So, I've developed an alternative rendering system to solve those problems, <a href="https://docs.google.com/document/d/1pa7fW9eKvHGvYIE_18echDlDytfWwz0bzHk39RfSpY8/edit#">here are the details</a>
 		Of course now I would do some parts of it differently and better...
 	</p>
 	<p class="regular">
 		Unfortunately, the project didn't make it, when the Covid19 outbreak happened, location-based games become irrelevant, and we start to do many different things.
-		Long story short, I have become a part of the subdivision: "Room 40 Games", have been doing many fast-cooked hyper-casual games. Mostly nonsensical, but there's one that I feel is worth showing off, despite it is a fairly boring game.. 
+		Long story short, I have become a part of the subdivision: "Room 40 Games", have been doing many fast-cooked hyper-casual games. 
+		There's one that I feel worth showing off, it was quite fun to make.. 
 	</p>
 	<p class="title">
-		Toy Master: Watch fullscreen.
+		<a href="https://drive.google.com/file/d/1sEiyKJh32xyk4BpUyJDCmdN-lhTrr2hE/preview">Toy Master: Watch fullscreen.</a>
 		<iframe class="videoplayer" src="https://drive.google.com/file/d/1sEiyKJh32xyk4BpUyJDCmdN-lhTrr2hE/preview" allow="fullscreen"></iframe>
 	</p>
 	<p class="regular">
 		Shortly thereafter this game failed hyper-casual marketing tests, I quit Kwest to start my new project under the code name: 
-		"Krypto Creatures", it's about generative NFT entities and related infrastructure. Involves AI, genetic programming, and blockchain technologies. Unfortunately, I don't have enough resources to continue to work on it full-time. Nevertheless, I'm still working on it on "weekend mode".
+		"Krypto Creatures", it's about generative NFT entities and related infrastructure. 
+		Involves AI, genetic programming, and blockchain technologies. 
+		Unfortunately, I didn't have enough resources to continue to work on it full-time so it's now my little personal weekends work.
 	</p>
 	<br><br><br><br><br><br><br><br>
 </div>
 <div class="section">	
 	<h1 class="sectionTitle" id="gallery">Gallery</h1>	
 	<p class="regular">
-		This is some of my little personal weekends works. 
-		Shaders I consider interesting enough to attract your attention and for a demonstration of a level of complexity I like to handle. 
-		Don't call me an artist, I enjoy creating such things in a form of mathematical and engineering problem-solving. Click on arrow icons to navigate. 
+		Here's more of my little personal weekends works. 
+		Shaders are an interesting way to demonstrate a high level of complexity (which I enjoy handling) and fascinating enough to attract your attention. 
+		While I don't consider myself an artist, I enjoy creating such things in a form of mathematical and engineering problem-solving.
+		Click on arrow icons to navigate. 
 	</p>
 </div>
 <div class="horizontalLayout"></div>
 <br><br><br><br><br><br><br><br>
 <div class="section" id="resume">	
 	<h1 class="sectionTitle">Resum-e<br><br><br></h1>	
-	<iframe class="pdf" allowfullscreen src="data/other/Resume-Alexey-Andreev.pdf"></iframe>
+	<p class="regular"></p>
+	<iframe class="pdf" src="https://docs.google.com/gview?url=https://ystyr.github.io/data/other/Resume-Alexey-Andreev.pdf&embedded=true"></iframe>
+	<!--<iframe class="pdf" src="data/other/Resume-Alexey-Andreev.pdf"></iframe>-->
 </div>
 <br><br><br><br><br><br><br><br>
 <div class="section" id="contact">	

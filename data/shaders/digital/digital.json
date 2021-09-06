@@ -1,6 +1,6 @@
 {
 	"title": "Digital Noise",
-	"description": "Experiments with noise management. In a way, that it looks more than just noise but still clearly remains to be a noise. Interractive",
+	"description": "Experiments with noise management. In a way, that it looks more than just noise but still clearly remains to be a noise. Controllable with your mouse.",
     "mapsInfo": [],
 	"include": [
         "hash21"
