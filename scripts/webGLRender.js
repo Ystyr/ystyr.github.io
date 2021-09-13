@@ -5,9 +5,11 @@ class webGLRender
         const a_names = buffersNames.attributes;
         const u_names = buffersNames.uniforms;
         const v_names = buffersNames.varyings;
-        const vertexShader = this.createShader(gl, gl.VERTEX_SHADER, vertShaderSrc);
-        const fragmentShader = this.createShader(gl, gl.FRAGMENT_SHADER, fragShaderSrc);
-        const program = this.createProgram(gl, vertexShader, fragmentShader);
+
+        this.gl = gl;
+        const vertexShader = this.createShader(gl.VERTEX_SHADER, vertShaderSrc);
+        const fragmentShader = this.createShader(gl.FRAGMENT_SHADER, fragShaderSrc);
+        const program = this.createProgram(vertexShader, fragmentShader);
         const positionAttributeLocation = gl.getAttribLocation(program, a_names.vertPos);
         const positionBuffer = gl.createBuffer();
         const uSamplersLocations = [];
@@ -32,7 +34,7 @@ class webGLRender
         );
         for (let i = 0; i < texData.length; i++) {
             samplers.push(
-                this.loadTexture(gl, texData[i], gl.TEXTURE0 + i)
+                this.loadTexture(texData[i], gl.TEXTURE0 + i)
                 );
             uSamplersLocations.push(
                 gl.getUniformLocation(program, u_names.sampler + i)
@@ -50,7 +52,7 @@ class webGLRender
         this.offset = 0;
         this.count = 6;
         this.then = 0;
-        this.gl = gl;
+        
         this.getMsePos = () => mousePos;
 
     }
@@ -59,7 +61,8 @@ class webGLRender
         this.getMsePos = getter;
     }
 
-    doDefaultTesture (gl) {
+    doDefaultTesture () {
+        const gl = this.gl;
         const texture = gl.createTexture();
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.texImage2D(
@@ -69,8 +72,9 @@ class webGLRender
         return texture;
     }
 
-    loadTexture(gl, texData, activeTexture) 
+    loadTexture(texData, activeTexture) 
     {
+        const gl = this.gl;
         const image = new Image();
         const texture = gl.createTexture();
 
@@ -127,7 +131,8 @@ class webGLRender
         this.clearRequest();
     }
 
-    createShader(gl, type, source) {
+    createShader(type, source) {
+        const gl = this.gl;
         let shader = gl.createShader(type);
         gl.shaderSource(shader, source);
         gl.compileShader(shader);
@@ -139,7 +144,8 @@ class webGLRender
         gl.deleteShader(shader);
     }
 
-    createProgram(gl, vertexShader, fragmentShader) {
+    createProgram(vertexShader, fragmentShader) {
+        const gl = this.gl;
         let program = gl.createProgram();
         gl.attachShader(program, vertexShader);
         gl.attachShader(program, fragmentShader);
