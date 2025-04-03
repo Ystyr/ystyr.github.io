@@ -41,9 +41,9 @@ float starsBg (vec2 st, float scale, vec2 t) {
     st += t;
     st *= scale;
     //st = rotate2d(t.y * .001) * st;
-    float f = perlin(st * 16.);
+    float f = perlin(st * 32.);
     f = 1. - smoothstep(f - noise2d(st * t * -.025), f + .1, .5);
-    return f;
+    return 1;
 }
 
 float meteorsBg (vec2 st, float scale, vec2 t) {
@@ -212,7 +212,7 @@ vec3 shape (in vec2 st) {
 
 void main () 
 {
-    float t = T;
+    float t = mod(T + 50, 100);
     vec2 m = MSE / RES;
     vec2 uv = (FRAG_XY * 1.3 * RES) / RES.y - vec2(.9,.5);
     vec2 duv = uv + vec2(0, t * .05);
@@ -259,7 +259,7 @@ void main ()
     ) * sin(asMsk - asOtl) + 
         astr * vec3(halfUp(sin(astT * TWO_PI)), halfUp(cos(astT)), abs(sin(astT) * .5));
     
-    vec3 shCol = shape((uv + vec2(.7, .3)) * 1.9);
+    vec3 shCol = 0;//shape((uv + vec2(.7, .3)) * 1.9);
     col = max(col, shCol);
 
     FRAG_OUT = vec4(col, 1.);
