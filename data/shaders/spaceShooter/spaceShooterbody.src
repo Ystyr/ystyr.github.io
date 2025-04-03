@@ -251,15 +251,14 @@ void main ()
     col = max(col, vec3(0));
     col += shp;
     
-    col = max(vec3(.1), col - vec3(min(1., (asMsk * asOtl) * 30.)));
-    ///*
-	col += vec3(
+    col = max(vec3(0.), col - vec3(min(1., (asMsk * asOtl) * 10.)));
+    col += vec3(
         halfUp(sin(astr + asMsk + asOtl * 5.)), 
         halfUp(cos(astr - asMsk * asOtl * abs(sin(t * .5) * TWO_PI))), 
         halfUp(sin((astr - asOtl * astr - asMsk) * 24.))
     ) * sin(asMsk - asOtl) + 
-        astr * vec3(halfUp(sin(astT * TWO_PI)), halfUp(cos(astT)), abs(sin(astT) * .5));
-    //*/
+        astr * vec3(halfUp(sin(astT * TWO_PI)), halfUp(cos(astT)), abs(sin(astT) * .5)) * 2;
+    
     vec3 shCol = shape((uv + vec2(.7, .3)) * 1.9);
     col = mix(col, shCol, dot(shCol, shCol));
 
