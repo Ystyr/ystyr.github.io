@@ -37,11 +37,11 @@ float stars (in vec2 p, out float id, float s) {
 }
 
 float starsBg (vec2 st, float scale, vec2 t) {
-    t += 999.;
+    //t += 999.;
     st += t;
     st *= scale;
     st = rotate2d(t.y * .001) * st;
-    float f = perlin(fract(st) * 14.);
+    float f = perlin(fract(st) * 16.);
     f = 1. - smoothstep(f - noise2d(st * t * -.025), f + .1, .5);
     return f;
 }
