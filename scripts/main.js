@@ -5,7 +5,7 @@ const shaderInfosUrls = [
     'https://ystyr.github.io/data/shaders/obsidian/obsidian.json',
     'https://ystyr.github.io/data/shaders/procerock/procerock.json',
     'https://ystyr.github.io/data/shaders/KIFSFract/KIFSFract.json',
-    'https://ystyr.github.io/data/shaders/spaceShooter/spaceShooter.json',
+    //'https://ystyr.github.io/data/shaders/spaceShooter/spaceShooter.json',
     'https://ystyr.github.io/data/shaders/hexgrid/hexgrid.json',
     "https://ystyr.github.io/data/shaders/digital/digital.json",
     "https://ystyr.github.io/data/shaders/title/title.json"	
