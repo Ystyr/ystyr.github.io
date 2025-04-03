@@ -260,7 +260,7 @@ void main ()
         astr * vec3(halfUp(sin(astT * TWO_PI)), halfUp(cos(astT)), abs(sin(astT) * .5));
     
     vec3 shCol = shape((uv + vec2(.7, .3)) * 1.9);
-    col = min(col, shCol);
+    col = mix(col, shCol, dot(shCol, shCol));
 
     FRAG_OUT = vec4(col, 1.);
 }
