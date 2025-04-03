@@ -257,7 +257,7 @@ void main ()
         halfUp(cos(astr - asMsk * asOtl * abs(sin(t * .5) * TWO_PI))), 
         halfUp(sin((astr - asOtl * astr - asMsk) * 24.))
     ) * sin(asMsk - asOtl) + 
-        astr * vec3(halfUp(sin(astT * TWO_PI)), halfUp(cos(astT)), abs(sin(astT) * .5)) * 2;
+        astr * vec3(halfUp(sin(astT * TWO_PI)), halfUp(cos(astT)), abs(sin(astT) * .5)) * 2.;
     
     vec3 shCol = shape((uv + vec2(.7, .3)) * 1.9);
     col = mix(col, shCol, dot(shCol, shCol));
