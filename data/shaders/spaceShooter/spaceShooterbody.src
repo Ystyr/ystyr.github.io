@@ -251,7 +251,7 @@ void main ()
     col = max(col, vec3(0));
     col += shp;
     
-    col = max(vec3(0.), col - vec3(min(1., (asMsk * asOtl) * 20.)));
+    col = max(vec3(.1), col - vec3(min(1., (asMsk * asOtl) * 30.)));
     /*
 	col += vec3(
         halfUp(sin(astr + asMsk + asOtl * 5.)), 
