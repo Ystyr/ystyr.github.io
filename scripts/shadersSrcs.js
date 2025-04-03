@@ -134,7 +134,7 @@ const shaderSrc = {
 		vec3 col = light * (inner * inCol + (outer - inner) * outCol + (1. - outer));
 		col *= outer * deepness/outWidth * bgCol;
 		//col = max(col, bgCol);
-		gl_FragColor = vec4(uv, 1, 1);//vec4(col, 0);
+		gl_FragColor = vec4(col, 0);
 	}
 	`
 }
