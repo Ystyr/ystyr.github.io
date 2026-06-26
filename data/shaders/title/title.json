@@ -1,8 +1,8 @@
 {
     "mapsInfo": [
-        { "format": "RGBA", "filter": "LINEAR", "url": "https://ystyr.github.io/data/textures/sdfFont.png"}
+        { "format": "RGBA", "filter": "LINEAR", "url": "data/textures/sdfFont.png"}
 	],
 	"include": [],
-	"body": "https://ystyr.github.io/data/shaders/title/titleBody.src",
+	"body": "data/shaders/title/titleBody.src",
 	"description": ""	
 }

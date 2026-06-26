@@ -1,121 +1,233 @@
 <!DOCTYPE html>
-<html>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="styles/theme888.css">
+<html lang="en">
 <head>
-	<title>Ystyr</title>
-	<script src="scripts/mouseUtils.js"></script>
-	<script src="scripts/webGLRender.js"></script>
-	<script src="scripts/shaderGenUtils.js"></script>
-	<script src="scripts/main.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Aleksei Andreev — Senior software engineer building real-time systems, computational geometry, graphics, and robotics. Based in Singapore.">
+	<meta name="author" content="Aleksei Andreev">
+	<meta property="og:title" content="Aleksei Andreev — Senior Software Engineer">
+	<meta property="og:description" content="Fifteen years of turning hard technical problems into shippable systems — from AR worlds and VR arcades to CAD pipelines and factory robots.">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://ystyr.github.io/">
+	<title>Aleksei Andreev — Senior Software Engineer</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="styles/main.css?v=6">
 </head>
-<body onload=onLoad() style="max-width:1300px">
-<div class="regular">
-	<img src="data/images/AlienDevice2.jpg" alt="Image">
-	<table style="width:80%; margin: auto;">
-		<tr>
-			<td><a href="#welcome"><button><h2>About</h2></button></a></td>
-			<td><a href="#gallery"><button><h2>Gallery</h2></button></a></td>
-			<td><canvas id='title' onmousemove="updateCanvMouse(this, event)" width="460"></canvas></td>
-			<td><a href="#resume"><button><h2>Resume</h2></button</a></td>
-			<td><a href="#contact"><button><h2>Contacts</h2></button></a></td>
-		</tr>
-	</table>
-</div>
-<br><br>
-<div class="section" id="welcome">
-	<h1 class="sectionTitle">About</h1>	
-	<div class="regular">	
-		Welcome! I'm Aleksei (Lex) Andreev, a software engineer based in Singapore (PR). 
-		This website serves as a personal portfolio showcasing my work and technical expertise. Nice to meet you! 
-	</div> 
-	<div class="regular left">	
-		Shader Alert: If you notice any elements flickering, lagging, or appearing incorrectly, try viewing the website in a different browser.
-	</div>
-	<div class="regular left">
-		I'm a Senior Software Engineer with over a decade of experience in the game industry.<br>
-		My skillset spans a broad spectrum, shaped by both the diverse demands of the industry and my own explorative approach to problem-solving.
-	</div> 
-	<div class="regular">
-		I have worked on developing production tools and pipelines, implementing various aspects of game logic, 
-		designing game AI systems, rendering systems, VFX systems, post-processing, procedural generators, audio controllers, 
-		GUI systems from scratch, as well as building system infrastructures, data flows, and other architectural components. 
-		I have also been involved in management, hiring, and team-building efforts, though my strengths lie more in technical problem-solving. 
-		Additionally, I've implemented numerous API adaptations tailored to diverse requirements.
-	</div>
-	<div class="regular left"> 
-		I have a particular passion for areas I’ve delved into more deeply, including rendering challenges, mathematical optimization, 
-		general-purpose GPU programming (such as compute shaders), simulations, and procedural generation. 
-		I am also interested in machine learning research, having experimented with genetic algorithms, Markov chains, and related techniques.
-	</div>
-	<p class="regular">
-		A significant portion of my career was spent at Kwest LLC, where I contributed extensively to various projects. 
-		The primary product was a location-based AR storytelling game called "Kwest Go".
-	</p>
-	<p class="title">
-		<a href="https://drive.google.com/file/d/1_RwAX_Vt538O9-WuFuo0asEfRThjJkuM/preview">Kwest Go Demo (Fullscreen Recommended)</a>
-		<iframe class="videoplayer" src="https://drive.google.com/file/d/1_RwAX_Vt538O9-WuFuo0asEfRThjJkuM/preview" allow="fullscreen"></iframe>
-	</p>
-	<p class="regular">
-		To highlight my contribution, the CEO of Kwest, Omeed Shams, remarked that the game would not be what it is without my work—if it would exist at all.
-	</p>
-	<p class="regular left">
-		One of my key contributions was "Kwest Graph"—a production toolset that enabled the creation of the entire experience without the need for programmers (though, like any tool, it required continuous refinement and adjustments).
-	</p>
-	<p class="regular">
-		Another achievement I'm proud of is the map rendering system. We partnered with Google and utilized their "MUSK" API, 
-		which posed challenges due to the massive number of meshes and high polycount (hundreds of thousands) that led to thousands of batches. 
-		To address these issues, I developed an alternative rendering system. <a href="https://docs.google.com/document/d/1pa7fW9eKvHGvYIE_18echDlDytfWwz0bzHk39RfSpY8/edit#">Here are the details</a>.
-		Looking back, there are areas I would approach differently for greater efficiency.
-	</p>
-	<p class="regular">
-		Unfortunately, the project came to a halt when the Covid-19 outbreak made location-based games less viable, leading us to pivot to other projects. 
-		I then joined "Room 40 Games," where we focused on quickly developed hyper-casual mobile games. 
-		One of the games I worked on stands out as particularly enjoyable to develop, and I'd love to share it here.
-	</p>
-	<p class="title">
-		<a href="https://drive.google.com/file/d/1sEiyKJh32xyk4BpUyJDCmdN-lhTrr2hE/preview">Toy Master (Fullscreen Recommended)</a>
-		<iframe class="videoplayer" src="https://drive.google.com/file/d/1sEiyKJh32xyk4BpUyJDCmdN-lhTrr2hE/preview" allow="fullscreen"></iframe>
-	</p>
-	<p class="regular">
-		Shortly thereafter this game failed hyper-casual marketing tests, I quit Kwest to start my new project under the code name: 
-		"Krypto Creatures", it's about generative NFT entities and related infrastructure. 
-		Involves AI, genetic programming, and blockchain technologies. 
-		Unfortunately, I didn't have enough resources to continue to work on it full-time so it's now my little personal weekends work.
-	</p>
-	<br><br><br><br><br><br><br><br>
-</div>
-<div class="section">	
-	<h1 class="sectionTitle" id="gallery">Gallery</h1>	
-	<p class="regular">
-		Here's more of my little personal weekends works. 
-		Shaders are an interesting way to demonstrate a high level of complexity (which I enjoy handling) and fascinating enough to attract your attention. 
-		While I don't consider myself an artist, I enjoy creating such things in a form of mathematical and engineering problem-solving.
-		Besides, you might be interested in the infrastructure I've developed for this showcase. Click on arrow icons to navigate.
-	</p>
-</div>
-<div class="horizontalLayout"></div>
-<br><br><br><br><br><br><br><br>
-<div class="section" id="resume">	
-	<h1 class="sectionTitle">Resum-e<br><br><br></h1>	
-	<iframe class="pdf" src="data/other/Resume Full 2026.pdf" allow-downloads loading='lazy' ><p class="regular">If you see this, your browser not supporting PDF</p></iframe>
-</div>
-<br><br><br><br><br><br><br><br>
-<div class="section" id="contact">	
-	<h1 class="sectionTitle">Contacts</h1>	
-	<div class="regular">
-		GET IN TOUCH
-		<p>e-mail: <a href="mailto:ravenametr@gmail.com">ravenametr@gmail.com</a></p>
-		<p><a href="https://www.linkedin.com/in/alexey-andreev-49a63821b/">LinkedIn</a></p>
-		<p><a href="https://github.com/Ystyr/">GitHub</a></p>
-	</div>
-</div>
-<footer class="regular">
-	<p>Author: Aleksei Ystyr Andreev</p>
-	<p>© All rights reserved</p>
-	
-</footer>
+<body>
+	<header class="site-header">
+		<div class="article header-inner">
+			<a class="logo" href="#">Aleksei Andreev</a>
+			<nav class="site-nav" aria-label="Main">
+				<a href="#work">Work</a>
+				<a href="#side-projects">Projects</a>
+				<a href="#demos">Demos</a>
+				<a href="#resume">Resume</a>
+				<a href="#contact">Contact</a>
+			</nav>
+		</div>
+	</header>
+
+	<main class="article">
+		<header class="page-header" id="top">
+			<p class="eyebrow">Senior Software Engineer · Singapore</p>
+			<h1>I like problems where the answer isn't obvious until you've built something.</h1>
+			<p class="lede">
+				For fifteen years I've worked at the messy intersection of mathematics, performance, and real
+				hardware — writing the code that has to work when theory meets production.
+			</p>
+			<p class="actions">
+				<a href="#resume">Resume</a> ·
+				<a href="https://www.linkedin.com/in/alexey-andreev-49a63821b/" target="_blank" rel="noopener noreferrer">LinkedIn</a> ·
+				<a href="mailto:ravenametr@gmail.com">Email</a>
+			</p>
+		</header>
+
+		<section id="about">
+			<h2>About</h2>
+			<p>
+				I'm Aleksei (Lex) Andreev. I started in game development — C++, large codebases, real-time
+				simulation — and kept following the interesting problems outward: rendering pipelines,
+				procedural systems, tools that let other people build, firmware that talks to physical
+				machines, CAD geometry that has to survive contact with a factory floor.
+			</p>
+			<p>
+				What ties it together isn't a single industry. It's a way of working: understand the actual
+				constraint, prototype fast, measure, then make it reliable enough that someone else can
+				depend on it. I've done that for location-based AR, VR arcade cabinets, industrial robots,
+				and the Unity developers who download my tools from the Asset Store.
+			</p>
+			<p>
+				These days I'm most energized by performance-critical systems — computational geometry,
+				GPU work, simulation, architecture — wherever the gap between "it works in a demo" and
+				"it works every day" is where the real engineering lives.
+			</p>
+		</section>
+
+		<section id="work">
+			<h2>Work</h2>
+
+			<h3>Factory-floor geometry</h3>
+			<p class="meta">Augmentus Robotics · Senior Software Developer · 2025–2026</p>
+			<p>
+				Most recently I worked on software that sits between a CAD file and a robot arm — the
+				unglamorous middle where a STEP model has to be cleaned, filtered, understood, and turned
+				into something a path planner can actually use. Off-the-shelf topology tools weren't fast
+				enough for the datasets we were seeing, so I built a custom analysis system from scratch:
+				feature extraction, geometric reasoning, the kind of code where a wrong assumption wastes
+				an afternoon and a right one saves a production line hours.
+			</p>
+			<p>
+				That work sat inside a broader OpenCascade pipeline — import, repair, select, prepare —
+				alongside integrity protection for deployed builds and the ordinary maintenance that keeps
+				a platform alive while new features land.
+			</p>
+
+			<h3>When VR meets real hardware</h3>
+			<p class="meta">LAI Games · Senior Game Programmer · 2021–2024</p>
+			<p>
+				At LAI Games the job wasn't just "make it fun in the headset." It was make the headset
+				believe the cabinet is real. I worked on Arcade Legends VR — virtual arcade machines you
+				play inside VR — which meant gameplay code on one side and firmware on the other, with
+				middleware in between so a physical button press in Singapore arrives as the right event
+				in Unity. I enjoy that kind of stack: immersion upstairs, wires downstairs, and you
+				own the seam where they meet.
+			</p>
+
+			<h3>A city as a game board</h3>
+			<p class="meta">KWEST · Lead Software Engineer · 2016–2021</p>
+			<p>
+				My longest single project was Kwest Go — a location-based AR storytelling game built with
+				Google, where the world outside your phone is part of the level design. I was lead engineer
+				across years of production: Android and Unity systems, geolocation, narrative tooling, and
+				the slow migration from one AR stack to another when the platform shifted under us.
+			</p>
+			<blockquote>
+				"The game would not be what it is without Lex's work — if it would exist at all."
+				<cite>— Omeed Shams, CEO of Kwest</cite>
+			</blockquote>
+			<p>
+				Two pieces of that work still feel representative. <strong>Kwest Graph</strong> was our
+				authoring system — a visual framework that let designers build interactive experiences
+				without waiting on engineering, while still being deep enough to grow with the product.
+				And when Google's MUSK map API drowned us in meshes and draw calls, I replaced the
+				rendering path with something that could handle the scale —
+				<a href="https://docs.google.com/document/d/1pa7fW9eKvHGvYIE_18echDlDytfWwz0bzHk39RfSpY8/edit#" target="_blank" rel="noopener noreferrer">I wrote up how</a>,
+				including what I'd do differently now.
+			</p>
+			<p>
+				<a href="https://drive.google.com/file/d/1_RwAX_Vt538O9-WuFuo0asEfRThjJkuM/preview" target="_blank" rel="noopener noreferrer">Kwest Go demo</a> (fullscreen recommended)
+			</p>
+			<iframe class="videoplayer" title="Kwest Go demo" src="https://drive.google.com/file/d/1_RwAX_Vt538O9-WuFuo0asEfRThjJkuM/preview" allow="fullscreen" loading="lazy"></iframe>
+
+			<h3>Earlier chapters</h3>
+			<p>
+				I cut my teeth at Suricate Games in St Petersburg — C++, the Unigine engine, large commercial
+				projects, the ordinary grind of features and bug fixes that teaches you how real codebases
+				actually behave. That was before I moved to Singapore.
+			</p>
+			<p>
+				Once here, I tried starting my own thing under <strong>Supervixi Automata</strong> — early
+				prototypes, GPU-accelerated services, experiments in procedural content and distributed
+				systems. It didn't become a company, but it was my first honest attempt at building
+				something mine, and it set the pattern for everything that followed: find a hard idea,
+				build the pipeline, see how far it goes.
+			</p>
+		</section>
+
+		<section id="side-projects">
+			<h2>Side projects</h2>
+
+			<h3>Tools for other builders</h3>
+			<p class="meta">
+				<a href="https://assetstore.unity.com/publishers/106357" target="_blank" rel="noopener noreferrer">Game Soft Craft</a> · Unity Asset Store
+			</p>
+			<p>
+				I publish under <strong>Game Soft Craft</strong> on the Unity Asset Store — small, focused
+				tools for developers who'd rather spend time on their game than reinventing a wheel.
+				The thread is procedural systems and sky rendering: <strong>S.P.A.C.E – Procedural Sky</strong>
+				for atmosphere without hand-painted cubemaps, and <strong>OmniCA</strong>, a free
+				cellular-automata tool for emergent patterns without writing the engine glue first.
+				Same instinct as Kwest Graph, aimed at a different audience.
+			</p>
+
+			<h3>A sensor pod on the desk</h3>
+			<p class="meta">
+				<a href="https://www.nordicsemi.com/Products/Development-hardware/Nordic-Thingy-91-X" target="_blank" rel="noopener noreferrer">Nordic Thingy:91 X</a> · personal
+			</p>
+			<p>
+				Another tangent from the day job: the Thingy:91 X, Nordic's cellular IoT prototyping kit —
+				sensors, BLE, LTE-M/NB-IoT, the whole low-power connected-device stack. I've been working
+				through it with the nRF Connect SDK and Zephyr RTOS: firmware, GATT services, getting data
+				off the device and onto a network without pretending a breadboard is a product. It's the
+				same itch as the LAI Games firmware work, but on hardware I picked myself, at my own pace.
+			</p>
+
+			<h3>Teaching a body to move</h3>
+			<p class="meta">
+				<a href="https://www.youtube.com/@aiwarehouse" target="_blank" rel="noopener noreferrer">AI Warehouse</a> · volunteer
+			</p>
+			<p>
+				I've been helping on a YouTube ML project — building the training pipeline for a physically
+				simulated AI character. Unity ML-Agents on the simulation side: environments, rewards,
+				the loop that turns physics into learnable behaviour. I built the pipeline and ran the
+				training myself. It's a different flavour of engineering from robotics CAD — less geometry,
+				more iteration — but the same satisfaction when something clumsy slowly learns to look alive.
+			</p>
+
+			<h3>A game on the back burner</h3>
+			<p>
+				There's also a personal game in slow progress — deep simulation, procedural content, emergent
+				play, the kind of design that only moves on weekends but keeps the research muscles warm.
+			</p>
+		</section>
+
+		<section id="demos">
+			<h2>Shader playground</h2>
+			<p>
+				These demos are weekend engineering dressed up as eye candy — ray marching, procedural
+				patterns, GPU effects wired through a modular shader pipeline I built for this site.
+				Not portfolio art; proof that I still like implementing complex things in GLSL.
+				Use the arrows to browse.
+			</p>
+			<div class="gallery-wrap">
+				<div class="horizontalLayout" aria-live="polite"></div>
+			</div>
+		</section>
+
+		<section id="resume">
+			<h2>Resume</h2>
+			<p class="section-note">Full CV with dates, skills, and contact details.</p>
+			<iframe class="pdf" title="Resume" src="data/other/Resume Full 2026.pdf" loading="lazy">
+				<p>Your browser does not support embedded PDFs.</p>
+			</iframe>
+		</section>
+
+		<section id="contact">
+			<h2>Contact</h2>
+			<p>
+				I'm looking for senior engineering roles where hard problems are the point — robotics,
+				real-time systems, graphics, tools, interactive software. If that sounds like what you're
+				building, I'd like to hear from you.
+			</p>
+			<p>
+				<a href="mailto:ravenametr@gmail.com">ravenametr@gmail.com</a> ·
+				<a href="https://www.linkedin.com/in/alexey-andreev-49a63821b/" target="_blank" rel="noopener noreferrer">LinkedIn</a> ·
+				<a href="https://github.com/Ystyr/" target="_blank" rel="noopener noreferrer">GitHub</a> ·
+				<a href="https://assetstore.unity.com/publishers/106357" target="_blank" rel="noopener noreferrer">Unity Asset Store</a> ·
+				<a href="https://www.youtube.com/@aiwarehouse" target="_blank" rel="noopener noreferrer">AI Warehouse</a>
+			</p>
+		</section>
+	</main>
+
+	<footer class="site-footer">
+		<p>&copy; Aleksei Andreev</p>
+	</footer>
+
+	<script src="scripts/mouseUtils.js?v=6"></script>
+	<script src="scripts/webGLRender.js?v=6"></script>
+	<script src="scripts/shaderGenUtils.js?v=6"></script>
+	<script src="scripts/main.js?v=6"></script>
 </body>
 </html>

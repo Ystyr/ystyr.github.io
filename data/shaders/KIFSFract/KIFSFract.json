@@ -2,10 +2,10 @@
 	"title": "KIFS Fractals",
 	"description": "Kaleidoscopic Fractals: When folding your Koch Snowflake into the Sierpinski triangle, do this with style",
     "mapsInfo": [
-        {"format": "RGBA", "filter": "LINEAR", "url": "https://ystyr.github.io/data/textures/stars.jpg"}
+        {"format": "RGBA", "filter": "LINEAR", "url": "data/textures/stars.jpg"}
 	],
 	"include": [
 		"halfUp", "halfDown", "sin01", "cos01", "dSqrt", "rot2d", "sdBox", "getRayDir"
 	],
-	"body": "https://ystyr.github.io/data/shaders/KIFSFract/KIFSFractBody.src"
+	"body": "data/shaders/KIFSFract/KIFSFractBody.src"
 }

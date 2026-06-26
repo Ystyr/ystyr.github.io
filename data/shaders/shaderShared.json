@@ -72,19 +72,19 @@
             "float sdBox(vec3 p, vec3 s) {\n\tp = abs(p) - s;\n\treturn length(max(p, 0.)) + min(max(p.x, max(p.y, p.z)), 0.);\n}"
         ],
         "noise2d": [
-            "https://ystyr.github.io/data/shaders/methods/noise2d.src"
+            "data/shaders/methods/noise2d.src"
         ],
         "perlin": [
-            "https://ystyr.github.io/data/shaders/methods/perlin.src"
+            "data/shaders/methods/perlin.src"
         ],
         "getRayDir": [
-            "https://ystyr.github.io/data/shaders/methods/getRayDir.src"
+            "data/shaders/methods/getRayDir.src"
         ],
         "getNormal": [
-            "https://ystyr.github.io/data/shaders/methods/getNormal.src"
+            "data/shaders/methods/getNormal.src"
         ],
         "rayMarch": [
-            "https://ystyr.github.io/data/shaders/methods/rayMarch.src"
+            "data/shaders/methods/rayMarch.src"
         ]
     } 
 }

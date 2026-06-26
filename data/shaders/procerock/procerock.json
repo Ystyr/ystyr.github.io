@@ -2,12 +2,12 @@
 	"title": "Nyan Boulder",
 	"description": "Procedural object texturing including procedural texturing and texturing by the sprite animation. Also simply cool. Use mouse to orbit camera",
     "mapsInfo": [
-        {"format": "LUMINANCE_ALPHA", "filter": "LINEAR", "url": "https://ystyr.github.io/data/textures/dirt.jpg"},
-        {"format": "RGBA", "filter": "NEAREST", "url": "https://ystyr.github.io/data/textures/cats.png"},
-        {"format": "LUMINANCE", "filter": "LINEAR", "url": "https://ystyr.github.io/data/textures/pebbles.png"}
+        {"format": "LUMINANCE_ALPHA", "filter": "LINEAR", "url": "data/textures/dirt.jpg"},
+        {"format": "RGBA", "filter": "NEAREST", "url": "data/textures/cats.png"},
+        {"format": "LUMINANCE", "filter": "LINEAR", "url": "data/textures/pebbles.png"}
 	],
 	"include": [
 		"halfUp", "halfDown", "sin01", "cos01", "dSqrt", "rot2d", "sdBox", "getRayDir"
 	],
-	"body": "https://ystyr.github.io/data/shaders/procerock/procerockBody.src"
+	"body": "data/shaders/procerock/procerockBody.src"
 }

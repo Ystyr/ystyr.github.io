@@ -2,10 +2,10 @@
 	"title": "Chtulhu World",
 	"description": "Gaze into the realm of Chtulhu. This satisfying and terrifying visual effect is based on Truchet tiling flow wrapped in polar coordinates. It also demonstrates some advanced texturing and pseudo 3d shading.",
 	"mapsInfo": [
-		{"format": "RGBA", "filter": "LINEAR", "url": "https://ystyr.github.io/data/textures/rust.jpg"}
+		{"format": "RGBA", "filter": "LINEAR", "url": "data/textures/rust.jpg"}
 	],
 	"include": [
 		"dSqrt", "hash21", "rot2d"
 	],
-	"body": "https://ystyr.github.io/data/shaders/chtulhu/chtulhuBody.src"
+	"body": "data/shaders/chtulhu/chtulhuBody.src"
 }

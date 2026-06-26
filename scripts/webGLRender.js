@@ -9,7 +9,8 @@ class webGLRender
         this.gl = gl;
         const vertexShader = this.createShader(gl.VERTEX_SHADER, vertShaderSrc);
         const fragmentShader = this.createShader(gl.FRAGMENT_SHADER, fragShaderSrc);
-        const program = this.createProgram(vertexShader, fragmentShader);
+        this.program = this.createProgram(vertexShader, fragmentShader);
+        const program = this.program;
         const positionAttributeLocation = gl.getAttribLocation(program, a_names.vertPos);
         const positionBuffer = gl.createBuffer();
         const uSamplersLocations = [];
@@ -20,7 +21,7 @@ class webGLRender
         ];
         gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verts), gl.STATIC_DRAW);
-        gl.clearColor(0, 0, 0, 0);
+        gl.clearColor(0, 0, 0, 1);
         gl.clear(gl.COLOR_BUFFER_BIT);
         gl.useProgram(program);
         gl.enableVertexAttribArray(positionAttributeLocation);
@@ -110,10 +111,12 @@ class webGLRender
         const gl = this.gl;
         const msePos = this.getMsePos();
         const samplersNum = this.uSamplersLocations.length;
+        gl.useProgram(this.program);
         gl.uniform1f(this.timeUniformLocation, time);
         gl.uniform2f(this.mouseUniformLocation, msePos[0], msePos[1]);
         gl.uniform2f(this.resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
         for (let i = 0; i < samplersNum; i++) {
+            gl.activeTexture(gl.TEXTURE0 + i);
             gl.uniform1i(this.uSamplersLocations[i], i);  
         }
         gl.drawArrays(this.primitiveType, this.offset, this.count); 
@@ -133,29 +136,31 @@ class webGLRender
 
     createShader(type, source) {
         const gl = this.gl;
-        let shader = gl.createShader(type);
+        const shader = gl.createShader(type);
         gl.shaderSource(shader, source);
         gl.compileShader(shader);
-        let success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
-        if (success) {
+        if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
             return shader;
         }
-        console.log(gl.getShaderInfoLog(shader));
+        const log = gl.getShaderInfoLog(shader);
+        console.error(gl.getShaderInfoLog(shader));
         gl.deleteShader(shader);
+        throw new Error(log || 'Shader compilation failed');
     }
 
     createProgram(vertexShader, fragmentShader) {
         const gl = this.gl;
-        let program = gl.createProgram();
+        const program = gl.createProgram();
         gl.attachShader(program, vertexShader);
         gl.attachShader(program, fragmentShader);
         gl.linkProgram(program);
-        let success = gl.getProgramParameter(program, gl.LINK_STATUS);
-        if (success) {
+        if (gl.getProgramParameter(program, gl.LINK_STATUS)) {
             return program;
         }
-        console.log(gl.getProgramInfoLog(program));
+        const log = gl.getProgramInfoLog(program);
+        console.error(log);
         gl.deleteProgram(program);
+        throw new Error(log || 'Program linking failed');
     }
 
     clearRequest () {
