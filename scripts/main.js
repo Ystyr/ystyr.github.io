@@ -1,6 +1,7 @@
 const shaderSharedInfoUrl = 'data/shaders/shaderShared.json';
 
 const galleryShaderUrls = [
+    'data/shaders/sparkball/sparkball.json',
     'data/shaders/chtulhu/chtulhu.json',
     'data/shaders/obsidian/obsidian.json',
     'data/shaders/procerock/procerock.json',

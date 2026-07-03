@@ -1,0 +1,11 @@
+{
+	"title": "Mysterious Orb",
+	"description": "A self reflecting mysterious orb of an alien origin (probably)",
+	"mapsInfo": [
+		{"format": "LUMINANCE", "filter": "LINEAR", "url": "data/textures/noise.png"}
+	],
+	"include": [
+		"halfUp", "rot2d", "smin2d", "getRayDir"
+	],
+	"body": "data/shaders/sparkball/sparkballBody.src"
+}
