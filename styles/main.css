@@ -201,6 +201,7 @@ blockquote cite {
 	margin: 0.5rem 0 1.5rem;
 	border: 0;
 	background: #000;
+	object-fit: contain;
 }
 
 /* Gallery */
