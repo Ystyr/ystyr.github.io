@@ -75,8 +75,10 @@ async function onLoad() {
     btnNext.type = 'button';
     btnPrev.setAttribute('aria-label', 'Previous demo');
     btnNext.setAttribute('aria-label', 'Next demo');
-    btnPrev.innerHTML = '&#8592;';
-    btnNext.innerHTML = '&#8594;';
+    const chevron = (points) =>
+        `<svg class="layoutControl-icon" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="${points}"/></svg>`;
+    btnPrev.innerHTML = chevron('15 18 9 12 15 6');
+    btnNext.innerHTML = chevron('9 18 15 12 9 6');
 
     layout.appendChild(btnPrev);
     layout.appendChild(galleryContent);
