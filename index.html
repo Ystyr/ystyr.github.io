@@ -13,7 +13,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="styles/main.css?v=6">
+	<link rel="stylesheet" href="styles/main.css?v=7">
 </head>
 <body>
 	<header class="site-header">
@@ -35,7 +35,8 @@
 			<h1>I like problems where the answer isn't obvious until you've built something.</h1>
 			<p class="lede">
 				For fifteen years I've worked at the messy intersection of mathematics, performance, and real
-				hardware — writing the code that has to work when theory meets production.
+				hardware — writing the code that has to work when theory meets production, including shipped
+				titles on Meta Quest and Google-backed location AR.
 			</p>
 			<p class="actions">
 				<a href="#resume">Resume</a> ·
@@ -55,8 +56,8 @@
 			<p>
 				What ties it together isn't a single industry. It's a way of working: understand the actual
 				constraint, prototype fast, measure, then make it reliable enough that someone else can
-				depend on it. I've done that for location-based AR, VR arcade cabinets, industrial robots,
-				and the Unity developers who download my tools from the Asset Store.
+				depend on it. I've done that for location-based AR, a shipped Meta Quest arcade title,
+				industrial robots, and the Unity developers who download my tools from the Asset Store.
 			</p>
 			<p>
 				These days I'm most energized by performance-critical systems — computational geometry,
@@ -87,12 +88,24 @@
 			<h3>When VR meets real hardware</h3>
 			<p class="meta">LAI Games · Senior Game Programmer · 2021–2024</p>
 			<p>
-				At LAI Games the job wasn't just "make it fun in the headset." It was make the headset
-				believe the cabinet is real. I worked on Arcade Legends VR — virtual arcade machines you
-				play inside VR — which meant gameplay code on one side and firmware on the other, with
-				middleware in between so a physical button press in Singapore arrives as the right event
-				in Unity. I enjoy that kind of stack: immersion upstairs, wires downstairs, and you
-				own the seam where they meet.
+				At LAI Games I spent three years on
+				<a href="https://www.meta.com/experiences/arcade-legend/4290234067753903/" target="_blank" rel="noopener noreferrer"><strong>Arcade Legend</strong></a>
+				— a Meta Quest title that recreates an arcade floor inside VR: walk up to cabinets, play the
+				games, build out your own space. It's a real shipping product, not a prototype; you can
+				buy it on the Quest store today.
+			</p>
+			<p>
+				The job wasn't just "make it fun in the headset." It was make the headset believe the cabinet
+				is real. My work sat across the stack: gameplay and systems in Unity on one side, firmware
+				for custom arcade cabinet hardware on the other, middleware in between so a physical button
+				press registers as the right event in VR. I helped design the virtual arcade machine systems
+				that hold the illusion together — the part where VR stops feeling like a menu and starts
+				feeling like a room full of working cabinets.
+			</p>
+			<p>
+				That project is still one of the clearest examples of how I like to work: own the seam between
+				software and hardware, ship something people can actually use, and make the technical glue
+				invisible.
 			</p>
 
 			<h3>A city as a game board</h3>
@@ -225,9 +238,9 @@
 		<p>&copy; Aleksei Andreev</p>
 	</footer>
 
-	<script src="scripts/mouseUtils.js?v=6"></script>
-	<script src="scripts/webGLRender.js?v=6"></script>
-	<script src="scripts/shaderGenUtils.js?v=6"></script>
-	<script src="scripts/main.js?v=6"></script>
+	<script src="scripts/mouseUtils.js?v=7"></script>
+	<script src="scripts/webGLRender.js?v=7"></script>
+	<script src="scripts/shaderGenUtils.js?v=7"></script>
+	<script src="scripts/main.js?v=7"></script>
 </body>
 </html>
